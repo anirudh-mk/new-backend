@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import AuditModel
@@ -9,44 +9,54 @@ from app.database.base import AuditModel
 class Country(AuditModel):
     __tablename__ = "countries"
 
-    name: Mapped[str] = mapped_column(
-        String(100),
-        unique=True,
-        nullable=False,
-        index=True
+    __table_args__ = (
+        UniqueConstraint(
+            "name",
+            "iso2",
+            "iso3",
+            name="uq_country_name_iso2_iso3",
+        ),
     )
 
-    iso2: Mapped[str] = mapped_column(
-        String(2),
-        unique=True,
-        nullable=False
-    )
 
-    iso3: Mapped[str] = mapped_column(
-        String(3),
-        unique=True,
-        nullable=False
-    )
+name: Mapped[str] = mapped_column(
+    String(100),
+    unique=True,
+    nullable=False,
+    index=True
+)
 
-    phone_code: Mapped[str] = mapped_column(
-        String(5),
-        nullable=False
-    )
+iso2: Mapped[str] = mapped_column(
+    String(2),
+    unique=True,
+    nullable=False
+)
 
-    currency_code: Mapped[str] = mapped_column(
-        String(3),
-        nullable=False
-    )
+iso3: Mapped[str] = mapped_column(
+    String(3),
+    unique=True,
+    nullable=False
+)
 
-    is_active: Mapped[bool] = mapped_column(
-        default=True,
-        nullable=False
-    )
+phone_code: Mapped[str] = mapped_column(
+    String(5),
+    nullable=False
+)
 
-    states: Mapped[list["State"]] = relationship(
-        back_populates="country",
-        cascade="all, delete-orphan",
-    )
+currency_code: Mapped[str] = mapped_column(
+    String(3),
+    nullable=False
+)
+
+is_active: Mapped[bool] = mapped_column(
+    default=True,
+    nullable=False
+)
+
+states: Mapped[list["State"]] = relationship(
+    back_populates="country",
+    cascade="all, delete-orphan",
+)
 
 
 class State(AuditModel):
