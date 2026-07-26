@@ -110,13 +110,6 @@ class VoucherType(AuditModel):
         doc="Optional description of the voucher type.",
     )
 
-    is_system: Mapped[bool] = mapped_column(
-        Boolean,
-        nullable=False,
-        default=True,
-        doc="Indicates whether the voucher type is predefined by the system.",
-    )
-
     is_active: Mapped[bool] = mapped_column(
         Boolean,
         nullable=False,
