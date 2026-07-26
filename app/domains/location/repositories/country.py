@@ -108,6 +108,7 @@ class CountryRepository:
     @staticmethod
     async def get_all(
             db: AsyncSession,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[Country]:
@@ -118,14 +119,22 @@ class CountryRepository:
 
         Args:
             db: Active database session.
+            search: Optional search term for country name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
         Returns:
             A list of countries.
         """
+        query = select(Country)
+
+        if search:
+            query = query.where(
+                Country.name.ilike(f"%{search.strip()}%")
+            )
+
         result = await db.execute(
-            select(Country)
+            query
             .order_by(Country.name)
             .offset(skip)
             .limit(limit)

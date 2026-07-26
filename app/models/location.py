@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -58,12 +58,22 @@ class Country(AuditModel):
 
 
 class State(AuditModel):
+    """
+    Represents a state or province within a country.
+
+    Each state belongs to a single country and can contain multiple
+    districts. State names are unique within the same country and
+    optionally include a short code or abbreviation.
+    """
+
     __tablename__ = "states"
 
-    country_id: Mapped[UUID] = mapped_column(
-        ForeignKey("countries.id", ondelete="CASCADE"),
-        nullable=False,
-        index=True,
+    __table_args__ = (
+        UniqueConstraint(
+            "country_id",
+            "name",
+            name="uq_state_country_name",
+        ),
     )
 
     name: Mapped[str] = mapped_column(
@@ -92,27 +102,39 @@ class State(AuditModel):
 
 
 class District(AuditModel):
+    """
+    Represents a district within a state.
+
+    Each district belongs to a single state and can be used to organize
+    lower-level administrative entities such as cities or branches.
+    """
+
     __tablename__ = "districts"
 
-    class District(AuditModel):
-        __tablename__ = "districts"
+    __table_args__ = (
+        UniqueConstraint(
+            "state_id",
+            "name",
+            name="uq_district_state_name",
+        ),
+    )
 
-        state_id: Mapped[UUID] = mapped_column(
-            ForeignKey("states.id", ondelete="CASCADE"),
-            nullable=False,
-            index=True,
-        )
+    state_id: Mapped[UUID] = mapped_column(
+        ForeignKey("states.id", ondelete="CASCADE"),
+        nullable=False,
+        index=True,
+    )
 
-        name: Mapped[str] = mapped_column(
-            String(100),
-            nullable=False,
-        )
+    name: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False,
+    )
 
-        is_active: Mapped[bool] = mapped_column(
-            default=True,
-            nullable=False,
-        )
+    is_active: Mapped[bool] = mapped_column(
+        default=True,
+        nullable=False,
+    )
 
-        state: Mapped["State"] = relationship(
-            back_populates="districts",
-        )
+    state: Mapped["State"] = relationship(
+        back_populates="districts",
+    )

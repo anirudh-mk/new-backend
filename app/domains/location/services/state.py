@@ -5,20 +5,15 @@ from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.location import Country
-from app.models.location import State
-from app.domains.location.repositories.location_repositories import (
-    CountryRepository,
+from app.domains.location.repositories.country import CountryRepository
+from app.domains.location.repositories.state import (
     StateRepository,
 )
-from app.domains.location.schema.location import (
-    CreateCountryRequestSchema,
-    UpdateCountryRequestSchema,
-)
-from app.domains.location.schema.location import (
+from app.domains.location.schemas.state import (
     CreateStateRequestSchema,
     UpdateStateRequestSchema,
 )
+from app.models.location import State
 
 
 class StateService:

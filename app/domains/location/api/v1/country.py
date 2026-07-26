@@ -19,6 +19,13 @@ router = APIRouter(
 
 @router.get("", response_model=list[CountryResponseSchema])
 async def list_countries(
+        search: str | None = Query(
+            None,
+            min_length=1,
+            max_length=100,
+            description="Search countries by name.",
+            examples=["Ind"],
+        ),
         skip: int = Query(0, ge=0),
         limit: int = Query(100, ge=1, le=100),
         db: AsyncSession = Depends(get_db),
@@ -26,7 +33,10 @@ async def list_countries(
     """
     Retrieve a paginated list of countries.
 
+    Optionally filter countries by name.
+
     Args:
+        search: Optional search term for country name.
         skip: Number of records to skip.
         limit: Maximum number of records to return.
         db: Database session.
@@ -36,6 +46,7 @@ async def list_countries(
     """
     return await CountryService.list(
         db=db,
+        search=search,
         skip=skip,
         limit=limit,
     )

@@ -5,7 +5,6 @@ from fastapi import HTTPException, status
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.location import Country
 from app.domains.location.repositories.country import (
     CountryRepository,
 )
@@ -13,6 +12,7 @@ from app.domains.location.schemas.country import (
     CreateCountryRequestSchema,
     UpdateCountryRequestSchema,
 )
+from app.models.location import Country
 
 
 class CountryService:
@@ -93,12 +93,20 @@ class CountryService:
             )
 
     @staticmethod
-    async def list(db: AsyncSession, skip: int = 0, limit: int = 100) -> List[Country]:
+    async def list(
+            db: AsyncSession,
+            search: str | None = None,
+            skip: int = 0,
+            limit: int = 100,
+    ) -> List[Country]:
         """
         Retrieve a paginated list of countries.
 
+        Optionally filter countries by name.
+
         Args:
             db: Database session.
+            search: Optional search term used to filter countries by name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -111,8 +119,12 @@ class CountryService:
         """
 
         try:
-            return await CountryRepository.get_all(db=db, skip=skip, limit=limit)
-
+            return await CountryRepository.get_all(
+                db=db,
+                search=search,
+                skip=skip,
+                limit=limit,
+            )
         except SQLAlchemyError:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

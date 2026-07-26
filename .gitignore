@@ -1,0 +1,81 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.venv/
+env/
+ENV/
+
+# Environment variables
+.env
+.env.*
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test & coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+
+# Type checking
+.mypy_cache/
+.pyre/
+.pytype/
+
+# Linting
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# SQLite databases
+*.sqlite3
+*.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# UV
+.uv/
+
+# Cache
+.cache/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Alembic cache (optional)
+alembic/__pycache__/
+
+# Python version (if using pyenv or uv)
+.python-version
+
+# Environment variables
+.env.local
+.env.development
+.env.production
+
+# macOS resource fork files
+._*
+
+# VS Code workspace files
+*.code-workspace
