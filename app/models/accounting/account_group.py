@@ -22,11 +22,98 @@ if TYPE_CHECKING:
 
 class AccountGroup(BaseModel):
     """
-    Represents a group of related ledgers within an account type.
+    Represents a logical grouping of ledger accounts within an account type.
 
-    Account groups organize ledgers into a hierarchical structure,
-    allowing financial reports such as the Balance Sheet and
-    Profit & Loss statement to be generated.
+    An AccountGroup organizes related ledger accounts into a hierarchical
+    structure, making it easier to classify financial data and generate
+    standard financial reports such as the Trial Balance, Balance Sheet,
+    Profit & Loss Statement, and Cash Flow Statement.
+
+    Every account group belongs to a single AccountType (Assets, Liabilities,
+    Equity, Income, or Expenses) and may optionally have a parent account
+    group, allowing unlimited hierarchical levels.
+
+    Purpose:
+        - Categorizes ledger accounts into meaningful financial groups.
+        - Supports hierarchical reporting through parent-child relationships.
+        - Defines the structure of the Chart of Accounts.
+        - Simplifies financial statement generation.
+        - Enables grouping and summarization of ledger balances.
+        - Provides consistent account classification across ERP modules.
+
+    Hierarchy Example:
+
+        Assets
+        │
+        ├── Current Assets
+        │   ├── Cash & Cash Equivalents
+        │   ├── Bank Accounts
+        │   ├── Accounts Receivable
+        │   └── Inventory
+        │
+        └── Non-Current Assets
+            ├── Fixed Assets
+            ├── Investments
+            └── Intangible Assets
+
+        Liabilities
+        │
+        ├── Current Liabilities
+        │   ├── Accounts Payable
+        │   ├── GST Payable
+        │   └── Accrued Expenses
+        │
+        └── Long-Term Liabilities
+            ├── Bank Loans
+            └── Mortgage
+
+    Each AccountGroup can contain:
+        - Child AccountGroups
+        - Ledger Accounts
+
+    Example:
+
+        Account Type
+            Assets
+
+        Account Group
+            Current Assets
+
+        Child Groups
+            Cash
+            Bank
+            Inventory
+
+        Ledgers
+            Cash on Hand
+            SBI Current Account
+            HDFC Bank Account
+
+    Relationships:
+        Company
+            └── AccountGroup (One-to-Many)
+
+        AccountType
+            └── AccountGroup (One-to-Many)
+
+        AccountGroup
+            ├── Parent AccountGroup (Many-to-One)
+            ├── Child AccountGroups (One-to-Many)
+            └── Ledgers (One-to-Many)
+
+    The AccountGroup serves as the intermediate layer of the Chart of Accounts:
+
+        AccountType
+              │
+              ▼
+        AccountGroup
+              │
+              ▼
+            Ledger
+
+    This hierarchy enables ERP systems to aggregate ledger balances at
+    different levels for reporting while maintaining a clear and scalable
+    financial structure.
     """
 
     __tablename__ = "account_groups"
