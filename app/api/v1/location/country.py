@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
-from app.schema.location import (
+from app.schema.location.country import (
     CreateCountryRequestSchema,
     CountryResponseSchema,
     UpdateCountryRequestSchema,
@@ -19,9 +19,9 @@ router = APIRouter(
 
 @router.get("", response_model=list[CountryResponseSchema])
 async def list_countries(
-    skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=100),
-    db: AsyncSession = Depends(get_db),
+        skip: int = Query(0, ge=0),
+        limit: int = Query(100, ge=1, le=100),
+        db: AsyncSession = Depends(get_db),
 ):
     """
     Retrieve a paginated list of countries.
@@ -43,8 +43,8 @@ async def list_countries(
 
 @router.get("/{country_id}", response_model=CountryResponseSchema)
 async def get_country(
-    country_id: UUID,
-    db: AsyncSession = Depends(get_db),
+        country_id: UUID,
+        db: AsyncSession = Depends(get_db),
 ):
     """
     Retrieve a country by its unique identifier.
@@ -68,8 +68,8 @@ async def get_country(
     status_code=status.HTTP_201_CREATED,
 )
 async def create_country(
-    body: CreateCountryRequestSchema,
-    db: AsyncSession = Depends(get_db),
+        body: CreateCountryRequestSchema,
+        db: AsyncSession = Depends(get_db),
 ):
     """
     Create a new country.
@@ -89,9 +89,9 @@ async def create_country(
 
 @router.patch("/{country_id}", response_model=CountryResponseSchema)
 async def update_country(
-    country_id: UUID,
-    body: UpdateCountryRequestSchema,
-    db: AsyncSession = Depends(get_db),
+        country_id: UUID,
+        body: UpdateCountryRequestSchema,
+        db: AsyncSession = Depends(get_db),
 ):
     """
     Partially update an existing country.
@@ -116,8 +116,8 @@ async def update_country(
     status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_country(
-    country_id: UUID,
-    db: AsyncSession = Depends(get_db),
+        country_id: UUID,
+        db: AsyncSession = Depends(get_db),
 ):
     """
     Delete a country.
