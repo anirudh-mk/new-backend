@@ -6,7 +6,7 @@ from pydantic import ConfigDict
 
 class CreateCountryRequestSchema(BaseModel):
     """
-    Request schema for creating a new country.
+    Request schemas for creating a new country.
     """
 
     name: str = Field(
@@ -77,7 +77,7 @@ class CreateCountryRequestSchema(BaseModel):
 
 class CountryResponseSchema(BaseModel):
     """
-    Response schema representing a country.
+    Response schemas representing a country.
     """
 
     id: UUID
@@ -92,7 +92,7 @@ class CountryResponseSchema(BaseModel):
 
 class UpdateCountryRequestSchema(BaseModel):
     """
-    Request schema for partially updating a country.
+    Request schemas for partially updating a country.
 
     All fields are optional to support PATCH operations.
     """

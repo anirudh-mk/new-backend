@@ -4,12 +4,12 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
-from app.schema.location.state import (
+from app.domains.location.schemas.state import (
     CreateStateRequestSchema,
     StateResponseSchema,
     UpdateStateRequestSchema,
 )
-from app.service.location_service import StateService
+from app.domains.location.services.state import StateService
 
 router = APIRouter(
     prefix="/states",

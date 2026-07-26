@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 class CreateStateRequestSchema(BaseModel):
     """
-    Request schema for creating a new state.
+    Request schemas for creating a new state.
 
     Attributes:
         country_id: UUID of the country to which the state belongs.
@@ -51,7 +51,7 @@ class CreateStateRequestSchema(BaseModel):
 
 class UpdateStateRequestSchema(BaseModel):
     """
-    Request schema for partially updating a state.
+    Request schemas for partially updating a state.
 
     All fields are optional to support PATCH operations.
     """
@@ -98,7 +98,7 @@ class UpdateStateRequestSchema(BaseModel):
 
 class StateResponseSchema(BaseModel):
     """
-    Response schema representing a state.
+    Response schemas representing a state.
     """
 
     id: UUID = Field(

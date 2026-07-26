@@ -4,12 +4,12 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
-from app.schema.location.country import (
+from app.domains.location.schemas.country import (
     CreateCountryRequestSchema,
     CountryResponseSchema,
     UpdateCountryRequestSchema,
 )
-from app.service.location_service import CountryService
+from app.domains.location.services.country import CountryService
 
 router = APIRouter(
     prefix="/countries",
