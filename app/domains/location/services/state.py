@@ -106,18 +106,19 @@ class StateService:
     async def list(
             db: AsyncSession,
             country_id: UUID | None = None,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[State]:
         """
         Retrieve a paginated list of states.
 
-        If a country ID is provided, only states belonging to that country
-        are returned.
+        Optionally filter states by country and search by name.
 
         Args:
             db: Database session.
-            country_id: Optional country UUID.
+            country_id: Optional country UUID used to filter states.
+            search: Optional search term used to filter states by name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -129,7 +130,6 @@ class StateService:
                 - 404 if the provided country does not exist.
                 - 500 if a database error occurs.
         """
-
         try:
             if country_id is not None:
                 country = await CountryRepository.get_by_id(db, country_id)
@@ -143,12 +143,14 @@ class StateService:
                 return await StateRepository.get_by_country_id(
                     db=db,
                     country_id=country_id,
+                    search=search,
                     skip=skip,
                     limit=limit,
                 )
 
             return await StateRepository.get_all(
                 db=db,
+                search=search,
                 skip=skip,
                 limit=limit,
             )

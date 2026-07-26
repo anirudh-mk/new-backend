@@ -108,24 +108,34 @@ class DistrictRepository:
     @staticmethod
     async def get_all(
             db: AsyncSession,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[District]:
         """
         Retrieve a paginated list of districts.
 
-        Districts are ordered alphabetically by name.
+        Optionally filter districts by name. Districts are ordered
+        alphabetically by name.
 
         Args:
             db: Active database session.
+            search: Optional search term for district name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
         Returns:
             A list of districts.
         """
+        query = select(District)
+
+        if search:
+            query = query.where(
+                District.name.ilike(f"%{search.strip()}%")
+            )
+
         result = await db.execute(
-            select(District)
+            query
             .order_by(District.name)
             .offset(skip)
             .limit(limit)
@@ -137,26 +147,37 @@ class DistrictRepository:
     async def get_by_state_id(
             db: AsyncSession,
             state_id: UUID,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[District]:
         """
         Retrieve a paginated list of districts belonging to a state.
 
-        Districts are ordered alphabetically by name.
+        Optionally filter districts by name. Districts are ordered
+        alphabetically by name.
 
         Args:
             db: Active database session.
             state_id: UUID of the state.
+            search: Optional search term for district name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
         Returns:
             A list of districts belonging to the specified state.
         """
+        query = select(District).where(
+            District.state_id == state_id
+        )
+
+        if search:
+            query = query.where(
+                District.name.ilike(f"%{search.strip()}%")
+            )
+
         result = await db.execute(
-            select(District)
-            .where(District.state_id == state_id)
+            query
             .order_by(District.name)
             .offset(skip)
             .limit(limit)

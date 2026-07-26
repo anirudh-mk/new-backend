@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
 from app.domains.location.schemas.district import (
     CreateDistrictRequestSchema,
     DistrictResponseSchema,
-    UpdateDistrictRequestSchema,
+    UpdateDistrictRequestSchema, ListDistrictRequestSchema,
 )
 from app.domains.location.services.district import DistrictService
 
@@ -19,23 +19,16 @@ router = APIRouter(
 
 @router.get("", response_model=list[DistrictResponseSchema])
 async def list_districts(
-        state_id: UUID | None = Query(
-            None,
-            description="Filter districts by state UUID.",
-        ),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(100, ge=1, le=100),
+        query: ListDistrictRequestSchema = Depends(),
         db: AsyncSession = Depends(get_db),
 ):
     """
     Retrieve a paginated list of districts.
 
-    Optionally filter districts by state.
+    Optionally filter districts by state and search by name.
 
     Args:
-        state_id: Optional state UUID.
-        skip: Number of records to skip.
-        limit: Maximum number of records to return.
+        query: District list request parameters.
         db: Database session.
 
     Returns:
@@ -43,9 +36,10 @@ async def list_districts(
     """
     return await DistrictService.list(
         db=db,
-        state_id=state_id,
-        skip=skip,
-        limit=limit,
+        state_id=query.state_id,
+        search=query.search,
+        skip=query.skip,
+        limit=query.limit,
     )
 
 

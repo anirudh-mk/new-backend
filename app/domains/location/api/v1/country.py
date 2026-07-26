@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
 from app.domains.location.schemas.country import (
     CreateCountryRequestSchema,
     CountryResponseSchema,
-    UpdateCountryRequestSchema,
+    UpdateCountryRequestSchema, ListCountryRequestSchema,
 )
 from app.domains.location.services.country import CountryService
 
@@ -19,15 +19,7 @@ router = APIRouter(
 
 @router.get("", response_model=list[CountryResponseSchema])
 async def list_countries(
-        search: str | None = Query(
-            None,
-            min_length=1,
-            max_length=100,
-            description="Search countries by name.",
-            examples=["Ind"],
-        ),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(100, ge=1, le=100),
+        query: ListCountryRequestSchema = Depends(),
         db: AsyncSession = Depends(get_db),
 ):
     """
@@ -36,9 +28,7 @@ async def list_countries(
     Optionally filter countries by name.
 
     Args:
-        search: Optional search term for country name.
-        skip: Number of records to skip.
-        limit: Maximum number of records to return.
+        query: Country list request parameters.
         db: Database session.
 
     Returns:
@@ -46,9 +36,9 @@ async def list_countries(
     """
     return await CountryService.list(
         db=db,
-        search=search,
-        skip=skip,
-        limit=limit,
+        search=query.search,
+        skip=query.skip,
+        limit=query.limit,
     )
 
 

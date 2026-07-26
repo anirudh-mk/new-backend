@@ -1,13 +1,13 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Query, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
 from app.domains.location.schemas.state import (
     CreateStateRequestSchema,
     StateResponseSchema,
-    UpdateStateRequestSchema,
+    UpdateStateRequestSchema, ListStateRequestSchema,
 )
 from app.domains.location.services.state import StateService
 
@@ -19,23 +19,16 @@ router = APIRouter(
 
 @router.get("", response_model=list[StateResponseSchema])
 async def list_states(
-        country_id: UUID | None = Query(
-            None,
-            description="Filter states by country UUID.",
-        ),
-        skip: int = Query(0, ge=0),
-        limit: int = Query(100, ge=1, le=100),
+        query: ListStateRequestSchema = Depends(),
         db: AsyncSession = Depends(get_db),
 ):
     """
     Retrieve a paginated list of states.
 
-    Optionally filter states by country.
+    Optionally filter states by country and search by name.
 
     Args:
-        country_id: Optional country UUID.
-        skip: Number of records to skip.
-        limit: Maximum number of records to return.
+        query: State list request parameters.
         db: Database session.
 
     Returns:
@@ -43,9 +36,10 @@ async def list_states(
     """
     return await StateService.list(
         db=db,
-        country_id=country_id,
-        skip=skip,
-        limit=limit,
+        country_id=query.country_id,
+        search=query.search,
+        skip=query.skip,
+        limit=query.limit,
     )
 
 

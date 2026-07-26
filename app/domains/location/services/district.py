@@ -110,18 +110,19 @@ class DistrictService:
     async def list(
             db: AsyncSession,
             state_id: UUID | None = None,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[District]:
         """
         Retrieve a paginated list of districts.
 
-        If a state ID is provided, only districts belonging to that state
-        are returned.
+        Optionally filter districts by state and search by name.
 
         Args:
             db: Database session.
-            state_id: Optional state UUID.
+            state_id: Optional state UUID used to filter districts.
+            search: Optional search term used to filter districts by name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -147,12 +148,14 @@ class DistrictService:
                 return await DistrictRepository.get_by_state_id(
                     db=db,
                     state_id=state_id,
+                    search=search,
                     skip=skip,
                     limit=limit,
                 )
 
             return await DistrictRepository.get_all(
                 db=db,
+                search=search,
                 skip=skip,
                 limit=limit,
             )

@@ -135,3 +135,38 @@ class StateResponseSchema(BaseModel):
     )
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ListStateRequestSchema(BaseModel):
+    """
+    Request schema for retrieving a paginated list of states.
+    """
+
+    country_id: UUID | None = Field(
+        None,
+        description="Filter states by country UUID.",
+        examples=["550e8400-e29b-41d4-a716-446655440000"],
+    )
+
+    search: str | None = Field(
+        None,
+        min_length=1,
+        max_length=100,
+        description="Search states by name.",
+        examples=["Ker"],
+    )
+
+    skip: int = Field(
+        0,
+        ge=0,
+        description="Number of records to skip.",
+        examples=[0],
+    )
+
+    limit: int = Field(
+        100,
+        ge=1,
+        le=100,
+        description="Maximum number of records to return.",
+        examples=[100],
+    )

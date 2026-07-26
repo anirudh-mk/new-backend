@@ -108,24 +108,34 @@ class StateRepository:
     @staticmethod
     async def get_all(
             db: AsyncSession,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[State]:
         """
         Retrieve a paginated list of states.
 
-        States are ordered alphabetically by name.
+        Optionally filter states by name. States are ordered alphabetically
+        by name.
 
         Args:
             db: Active database session.
+            search: Optional search term for state name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
         Returns:
             A list of states.
         """
+        query = select(State)
+
+        if search:
+            query = query.where(
+                State.name.ilike(f"%{search.strip()}%")
+            )
+
         result = await db.execute(
-            select(State)
+            query
             .order_by(State.name)
             .offset(skip)
             .limit(limit)
@@ -137,26 +147,37 @@ class StateRepository:
     async def get_by_country_id(
             db: AsyncSession,
             country_id: UUID,
+            search: str | None = None,
             skip: int = 0,
             limit: int = 100,
     ) -> List[State]:
         """
         Retrieve a paginated list of states belonging to a country.
 
-        States are ordered alphabetically by name.
+        Optionally filter states by name. States are ordered alphabetically
+        by name.
 
         Args:
             db: Active database session.
             country_id: UUID of the country.
+            search: Optional search term for state name.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
         Returns:
             A list of states belonging to the specified country.
         """
+        query = select(State).where(
+            State.country_id == country_id
+        )
+
+        if search:
+            query = query.where(
+                State.name.ilike(f"%{search.strip()}%")
+            )
+
         result = await db.execute(
-            select(State)
-            .where(State.country_id == country_id)
+            query
             .order_by(State.name)
             .offset(skip)
             .limit(limit)
