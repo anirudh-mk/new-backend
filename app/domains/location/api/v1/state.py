@@ -25,7 +25,7 @@ async def list_states(
     """
     Retrieve a paginated list of states.
 
-    Optionally filter states by country and search by name.
+    Optionally filter states by country and search by name or code.
 
     Args:
         query: State list request parameters.

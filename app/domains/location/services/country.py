@@ -102,11 +102,13 @@ class CountryService:
         """
         Retrieve a paginated list of countries.
 
-        Optionally filter countries by name.
+        Optionally filter countries by name, ISO2 code, ISO3 code,
+        phone code, or currency code.
 
         Args:
             db: Database session.
-            search: Optional search term used to filter countries by name.
+            search: Optional search term used to filter countries by
+                name, ISO2 code, ISO3 code, phone code, or currency code.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 

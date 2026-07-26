@@ -25,7 +25,8 @@ async def list_countries(
     """
     Retrieve a paginated list of countries.
 
-    Optionally filter countries by name.
+    Optionally filter countries by name, ISO2 code, ISO3 code,
+    phone code, or currency code.
 
     Args:
         query: Country list request parameters.

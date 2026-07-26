@@ -1,7 +1,7 @@
 from typing import List, cast
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, or_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -115,12 +115,13 @@ class StateRepository:
         """
         Retrieve a paginated list of states.
 
-        Optionally filter states by name. States are ordered alphabetically
-        by name.
+        Optionally filter states by name or code. States are ordered
+        alphabetically by name.
 
         Args:
             db: Active database session.
-            search: Optional search term for state name.
+            search: Optional search term used to match the state name
+                or code.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -130,8 +131,13 @@ class StateRepository:
         query = select(State)
 
         if search:
+            search = search.strip()
+
             query = query.where(
-                State.name.ilike(f"%{search.strip()}%")
+                or_(
+                    State.name.ilike(f"%{search}%"),
+                    State.code.ilike(f"%{search}%"),
+                )
             )
 
         result = await db.execute(
@@ -154,13 +160,14 @@ class StateRepository:
         """
         Retrieve a paginated list of states belonging to a country.
 
-        Optionally filter states by name. States are ordered alphabetically
-        by name.
+        Optionally filter states by name or code. States are ordered
+        alphabetically by name.
 
         Args:
             db: Active database session.
             country_id: UUID of the country.
-            search: Optional search term for state name.
+            search: Optional search term used to match the state name
+                or code.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -172,8 +179,13 @@ class StateRepository:
         )
 
         if search:
+            search = search.strip()
+
             query = query.where(
-                State.name.ilike(f"%{search.strip()}%")
+                or_(
+                    State.name.ilike(f"%{search}%"),
+                    State.code.ilike(f"%{search}%"),
+                )
             )
 
         result = await db.execute(

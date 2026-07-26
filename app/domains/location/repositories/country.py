@@ -1,7 +1,7 @@
 from typing import List, cast
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import select, or_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -115,11 +115,14 @@ class CountryRepository:
         """
         Retrieve a paginated list of countries.
 
-        Countries are ordered alphabetically by name.
+        Optionally filter countries by name, ISO2 code, ISO3 code,
+        phone code, or currency code. Results are ordered
+        alphabetically by country name.
 
         Args:
             db: Active database session.
-            search: Optional search term for country name.
+            search: Optional search term used to match the country name,
+                ISO2 code, ISO3 code, phone code, or currency code.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
@@ -129,8 +132,16 @@ class CountryRepository:
         query = select(Country)
 
         if search:
+            search = search.strip()
+
             query = query.where(
-                Country.name.ilike(f"%{search.strip()}%")
+                or_(
+                    Country.name.ilike(f"%{search}%"),
+                    Country.iso2.ilike(f"%{search}%"),
+                    Country.iso3.ilike(f"%{search}%"),
+                    Country.phone_code.ilike(f"%{search}%"),
+                    Country.currency_code.ilike(f"%{search}%"),
+                )
             )
 
         result = await db.execute(

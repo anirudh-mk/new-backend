@@ -113,12 +113,13 @@ class StateService:
         """
         Retrieve a paginated list of states.
 
-        Optionally filter states by country and search by name.
+        Optionally filter states by country and search by name or code.
 
         Args:
             db: Database session.
             country_id: Optional country UUID used to filter states.
-            search: Optional search term used to filter states by name.
+            search: Optional search term used to match the state name
+                or code.
             skip: Number of records to skip.
             limit: Maximum number of records to return.
 
