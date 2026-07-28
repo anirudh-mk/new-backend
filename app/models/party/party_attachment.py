@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.common.attachment_type import AttachmentType
+    from app.models.core.attachment_type import AttachmentType
     from app.models.party.party import Party
 
 

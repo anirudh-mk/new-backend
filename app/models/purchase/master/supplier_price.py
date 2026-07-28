@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from sqlalchemy import (
     Boolean,
@@ -18,9 +20,10 @@ if TYPE_CHECKING:
     from app.models.company.company import Company
     from app.models.party.party import Party
     from app.models.inventory.product import Product
-    from app.models.inventory.unit_of_measurement import UnitOfMeasurement
-    from app.models.common.currency import Currency
+    from app.models.inventory.uom import UOM
+    from app.models.core.currency import Currency
     from app.models.purchase.supplier_price_type import SupplierPriceType
+    from app.models.purchase.master.supplier_price_history import SupplierPriceHistory
 
 
 class SupplierPrice(AuditModel):
@@ -163,42 +166,42 @@ class SupplierPrice(AuditModel):
         ),
     )
 
-    company_id: Mapped[int] = mapped_column(
+    company_id: Mapped[UUID] = mapped_column(
         ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this supplier price record.",
     )
 
-    supplier_id: Mapped[int] = mapped_column(
+    supplier_id: Mapped[UUID] = mapped_column(
         ForeignKey("parties.id"),
         nullable=False,
         index=True,
         doc="Supplier offering the product.",
     )
 
-    product_id: Mapped[int] = mapped_column(
+    product_id: Mapped[UUID] = mapped_column(
         ForeignKey("products.id"),
         nullable=False,
         index=True,
         doc="Product for which this price applies.",
     )
 
-    uom_id: Mapped[int] = mapped_column(
-        ForeignKey("unit_of_measurements.id"),
+    uom_id: Mapped[UUID] = mapped_column(
+        ForeignKey("uoms.id"),
         nullable=False,
         index=True,
-        doc="Unit of Measurement applicable for this price.",
+        doc="Unit of Measure applicable for this price.",
     )
 
-    currency_id: Mapped[int] = mapped_column(
+    currency_id: Mapped[UUID] = mapped_column(
         ForeignKey("currencies.id"),
         nullable=False,
         index=True,
         doc="Currency in which the purchase price is maintained.",
     )
 
-    price_type_id: Mapped[int] = mapped_column(
+    price_type_id: Mapped[UUID] = mapped_column(
         ForeignKey("supplier_price_types.id"),
         nullable=False,
         index=True,
@@ -271,8 +274,13 @@ class SupplierPrice(AuditModel):
 
     product: Mapped["Product"] = relationship()
 
-    uom: Mapped["UnitOfMeasurement"] = relationship()
+    uom: Mapped["UOM"] = relationship()
 
     currency: Mapped["Currency"] = relationship()
 
     price_type: Mapped["SupplierPriceType"] = relationship()
+
+    history: Mapped[list["SupplierPriceHistory"]] = relationship(
+        back_populates="supplier_price",
+        cascade="all, delete-orphan",
+    )

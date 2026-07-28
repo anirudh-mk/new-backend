@@ -16,7 +16,7 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.location import Country
-    from app.models.common.address_type import AddressType
+    from app.models.core.address_type import AddressType
     from app.models.party.party import Party
     from app.models.location import State
 

@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import TYPE_CHECKING
+from uuid import UUID
 
 from sqlalchemy import (
     Boolean,
@@ -16,7 +18,7 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     from app.models.company import Company
     from app.models.compan.branch import Branch
-    from app.models.common.currency import Currency
+    from app.models.core.currency import Currency
     from app.models.purchase.purchase_receipt import PurchaseReceipt
     from app.models.purchase.landed_cost_item import LandedCostItem
     from app.models.purchase.landed_cost_allocation_method import (
@@ -90,26 +92,26 @@ class LandedCost(AuditModel):
         doc="Date the landed cost document was created.",
     )
 
-    company_id: Mapped[int] = mapped_column(
+    company_id: Mapped[UUID] = mapped_column(
         ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
-    branch_id: Mapped[int] = mapped_column(
+    branch_id: Mapped[UUID] = mapped_column(
         ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
 
-    purchase_receipt_id: Mapped[int] = mapped_column(
+    purchase_receipt_id: Mapped[UUID] = mapped_column(
         ForeignKey("purchase_receipts.id"),
         nullable=False,
         index=True,
         doc="Purchase Receipt to which the landed cost applies.",
     )
 
-    currency_id: Mapped[int] = mapped_column(
+    currency_id: Mapped[UUID] = mapped_column(
         ForeignKey("currencies.id"),
         nullable=False,
         index=True,
@@ -129,7 +131,7 @@ class LandedCost(AuditModel):
         doc="Total landed cost amount to be allocated.",
     )
 
-    allocation_method_id: Mapped[int] = mapped_column(
+    allocation_method_id: Mapped[UUID] = mapped_column(
         ForeignKey("landed_cost_allocation_methods.id"),
         nullable=False,
         index=True,
@@ -142,7 +144,7 @@ class LandedCost(AuditModel):
         doc="Additional remarks.",
     )
 
-    status_id: Mapped[int] = mapped_column(
+    status_id: Mapped[UUID] = mapped_column(
         ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
@@ -181,6 +183,11 @@ class LandedCost(AuditModel):
     status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["LandedCostItem"]] = relationship(
+        back_populates="landed_cost",
+        cascade="all, delete-orphan",
+    )
+
+    charges: Mapped[list["LandedCostCharge"]] = relationship(
         back_populates="landed_cost",
         cascade="all, delete-orphan",
     )
