@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company import Company
+    from app.models.company.company import Company
     from app.models.accounting.accounting_period import AccountingPeriod
     from app.models.accounting.journal_entry import JournalEntry
 

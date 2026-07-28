@@ -14,8 +14,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.location import Country
-    from app.models.currency.currency import Currency
+    from app.models.core.country import Country
+    from app.models.core.currency import Currency
     from app.models.party.party import Party
 
 

@@ -10,8 +10,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company import Company
-    from app.models.branch import Branch
+    from app.models.company.company import Company
+    from app.models.company.branch import Branch
     from app.models.user.user import User
     from app.models.purchase.purchase_requisition_item import PurchaseRequisitionItem
     from app.models.purchase.purchase_approval import PurchaseApproval

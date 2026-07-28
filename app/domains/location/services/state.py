@@ -13,7 +13,7 @@ from app.domains.location.schemas.state import (
     CreateStateRequestSchema,
     UpdateStateRequestSchema,
 )
-from app.models.location import State
+from app.models.core.state import State
 
 
 class StateService:

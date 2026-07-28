@@ -5,7 +5,7 @@ from sqlalchemy import select, or_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.location import Country
+from app.models.core.country import Country
 
 
 class CountryRepository:

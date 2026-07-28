@@ -10,7 +10,7 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     from app.models.accounting.ledger import Ledger
     from app.models.accounting.tax_type import TaxType
-    from app.models.company import Company
+    from app.models.company.company import Company
 
 
 class Tax(AuditModel):

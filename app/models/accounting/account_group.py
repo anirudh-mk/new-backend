@@ -15,7 +15,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company import Company
+    from app.models.company.company import Company
     from app.models.accounting.account_type import AccountType
     from app.models.accounting.ledger import Ledger
 

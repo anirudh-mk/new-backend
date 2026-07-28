@@ -12,7 +12,7 @@ from app.domains.location.schemas.country import (
     CreateCountryRequestSchema,
     UpdateCountryRequestSchema,
 )
-from app.models.location import Country
+from app.models.core.country import Country
 
 
 class CountryService:

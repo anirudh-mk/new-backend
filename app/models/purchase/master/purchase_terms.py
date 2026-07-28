@@ -18,7 +18,7 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.user.user import User
-    from app.models.company.company import Company
+    from app.models.company.company.company import Company
     from app.models.purchase.order.purchase_order import PurchaseOrder
 
 

@@ -19,8 +19,8 @@ if TYPE_CHECKING:
     from app.models.accounting.bank_account import BankAccount
     from app.models.core.currency import Currency
     from app.models.user.user import User
-    from app.models.company.branch import Branch
-    from app.models.company.company import Company
+    from app.models.company.company.branch import Branch
+    from app.models.company.company.company import Company
     from app.models.party.party import Party
     from app.models.finance.payment_method import PaymentMethod
     from app.models.accounting.journal_status import JournalStatus

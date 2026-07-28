@@ -13,7 +13,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    from app.models.company.company.company import Company
     from app.models.inventory.product import Product
     from app.models.purchase.inspection.inspection_parameter import InspectionParameter
 

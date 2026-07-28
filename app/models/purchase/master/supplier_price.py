@@ -17,7 +17,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    from app.models.company.company.company import Company
     from app.models.party.party import Party
     from app.models.inventory.product import Product
     from app.models.inventory.uom import UOM

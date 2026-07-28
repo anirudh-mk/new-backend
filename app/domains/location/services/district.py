@@ -11,7 +11,7 @@ from app.domains.location.schemas.district import (
     CreateDistrictRequestSchema,
     UpdateDistrictRequestSchema,
 )
-from app.models.location import District
+from app.models.core.district import District
 
 
 class DistrictService:

@@ -15,8 +15,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    from app.models.company.company.company import Company
+    from app.models.company.company.branch import Branch
     from app.models.party.party import Party
     from app.models.inventory.warehouse import Warehouse
     from app.models.purchase.purchase_order import PurchaseOrder

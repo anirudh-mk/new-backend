@@ -16,8 +16,8 @@ if TYPE_CHECKING:
     from app.models.accounting.journal_entry_line import JournalEntryLine
     from app.models.accounting.journal_status import JournalStatus
     from app.models.accounting.voucher_type import VoucherType
-    from app.models.branch import Branch
-    from app.models.company import Company
+    from app.models.company.branch import Branch
+    from app.models.company.company import Company
     from app.models.user import User
 
 

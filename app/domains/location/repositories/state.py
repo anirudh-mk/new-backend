@@ -5,7 +5,7 @@ from sqlalchemy import select, or_
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.location import State
+from app.models.core.state import State
 
 
 class StateRepository:

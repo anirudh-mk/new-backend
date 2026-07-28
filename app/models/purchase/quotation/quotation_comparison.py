@@ -18,8 +18,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    from app.models.company.company.company import Company
+    from app.models.company.company.branch import Branch
     from app.models.purchase.quotation.request_for_quotation import RequestForQuotation
     from app.models.purchase.requisition.purchase_requisition import PurchaseRequisition
     from app.models.accounting.journal_status import JournalStatus

@@ -12,7 +12,7 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     from app.models.accounting.journal_entry import JournalEntry
     from app.models.accounting.ledger import Ledger
-    from app.models.branch import Branch
+    from app.models.company.branch import Branch
 
 
 class JournalEntryLine(AuditModel):

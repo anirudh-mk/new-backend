@@ -18,9 +18,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    from app.models.company.company.company import Company
     from app.models.party.party import Party
-    from app.models.currency.currency import Currency
+    from app.models.core.currency import Currency
     from app.models.accounting.payment_term import PaymentTerm
     from app.models.purchase.purchase_order import PurchaseOrder
 

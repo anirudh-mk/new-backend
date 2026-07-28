@@ -18,8 +18,8 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.accounting.ledger import Ledger
-    from app.models.company import Company
-    from app.models.currency.currency import Currency
+    from app.models.company.company import Company
+    from app.models.core.currency import Currency
     from app.models.party.party_address import PartyAddress
     from app.models.party.party_attachment import PartyAttachment
     from app.models.party.party_bank_account import PartyBankAccount

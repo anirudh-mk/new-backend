@@ -16,8 +16,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company import Company
-    from app.models.branch import Branch
+    from app.models.company.company import Company
+    from app.models.company.branch import Branch
     from app.models.core.document_type import DocumentType
     from app.models.user.user import User
     from app.models.accounting.journal_status import JournalStatus
