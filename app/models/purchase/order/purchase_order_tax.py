@@ -13,7 +13,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.accounting.tax_type import TaxType
+    pass  # decoupled: from app.models.accounting.tax_type import TaxType
     from app.models.purchase.order.purchase_order import PurchaseOrder
 
 
@@ -69,7 +69,6 @@ class PurchaseOrderTax(BaseModel):
     )
 
     tax_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("tax_types.id"),
         nullable=False,
         index=True,
         doc="Type of tax.",
@@ -114,5 +113,3 @@ class PurchaseOrderTax(BaseModel):
     purchase_order: Mapped["PurchaseOrder"] = relationship(
         back_populates="taxes",
     )
-
-    tax_type: Mapped["TaxType"] = relationship()

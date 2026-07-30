@@ -16,16 +16,16 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.inventory.warehouse import Warehouse
     from app.models.purchase.purchase_order import PurchaseOrder
     from app.models.purchase.purchase_receipt import PurchaseReceipt
     from app.models.purchase.purchase_invoice import PurchaseInvoice
     from app.models.purchase.purchase_return_item import PurchaseReturnItem
     from app.models.purchase.purchase_return_type import PurchaseReturnType
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class PurchaseReturn(AuditModel):
@@ -91,13 +91,11 @@ class PurchaseReturn(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -121,7 +119,6 @@ class PurchaseReturn(AuditModel):
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -181,7 +178,6 @@ class PurchaseReturn(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -202,11 +198,8 @@ class PurchaseReturn(AuditModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
-    supplier: Mapped["Party"] = relationship()
 
     purchase_order: Mapped["PurchaseOrder"] = relationship()
 
@@ -218,7 +211,6 @@ class PurchaseReturn(AuditModel):
 
     return_type: Mapped["PurchaseReturnType"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseReturnItem"]] = relationship(
         back_populates="purchase_return",

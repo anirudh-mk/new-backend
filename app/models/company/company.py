@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from app.models.company.company_address import CompanyAddress
     from app.models.company.company_contact import CompanyContact
     from app.models.company.branch import Branch
-    from app.models.accounting.tax_type import TaxType
+    pass  # decoupled: from app.models.accounting.tax_type import TaxType
 
 
 
@@ -49,7 +49,6 @@ class Company(AuditModel):
     )
 
     tax_type_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("company_tax_types.id", ondelete="SET NULL"),
         nullable=True,
         doc="The primary tax scheme/type registered for the company (links to TaxType).",
     )
@@ -85,7 +84,6 @@ class Company(AuditModel):
         doc="Communication contact methods registered under this company.",
     )
 
-    tax_type: Mapped["TaxType"] = relationship()
 
     def __repr__(self) -> str:
         return f"<Company(id={self.id}, code='{self.code}', name='{self.name}')>"

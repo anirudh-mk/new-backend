@@ -16,8 +16,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.user.user import User
 
 
 class ApprovalWorkflow(AuditModel):
@@ -28,7 +28,6 @@ class ApprovalWorkflow(AuditModel):
     __tablename__ = "approval_workflows"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
@@ -67,7 +66,6 @@ class ApprovalWorkflow(AuditModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
     
     steps: Mapped[list["ApprovalWorkflowStep"]] = relationship(
         back_populates="workflow",
@@ -110,7 +108,6 @@ class ApprovalWorkflowStep(BaseModel):
     )
 
     user_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
         index=True,
         doc="Specific user required to approve at this step.",
@@ -124,7 +121,6 @@ class ApprovalWorkflowStep(BaseModel):
 
     # Relationships
     workflow: Mapped["ApprovalWorkflow"] = relationship(back_populates="steps")
-    user: Mapped["User"] = relationship()
 
     def __repr__(self) -> str:
         return f"<ApprovalWorkflowStep(level={self.level}, label='{self.approver_label}')>"

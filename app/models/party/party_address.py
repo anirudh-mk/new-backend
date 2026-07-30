@@ -15,10 +15,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.core.country import Country
-    from app.models.core.address_type import AddressType
+    pass  # decoupled: from app.models.core.country import Country
+    pass  # decoupled: from app.models.core.address_type import AddressType
     from app.models.party.party import Party
-    from app.models.core.state import State
+    pass  # decoupled: from app.models.core.state import State
 
 
 class PartyAddress(AuditModel):
@@ -96,7 +96,6 @@ class PartyAddress(AuditModel):
     )
 
     address_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("address_types.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Classification of the address (Billing, Shipping, Office, Warehouse, etc.).",
@@ -128,14 +127,12 @@ class PartyAddress(AuditModel):
     )
 
     state_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("states.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
         doc="State or province.",
     )
 
     country_id: Mapped[UUID] = mapped_column(
-        ForeignKey("countries.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Country.",
@@ -190,17 +187,4 @@ class PartyAddress(AuditModel):
         doc="Party associated with this address.",
     )
 
-    address_type: Mapped["AddressType"] = relationship(
-        lazy="selectin",
-        doc="Type of address assigned to this record.",
-    )
 
-    state: Mapped["State | None"] = relationship(
-        lazy="selectin",
-        doc="State or province.",
-    )
-
-    country: Mapped["Country"] = relationship(
-        lazy="selectin",
-        doc="Country.",
-    )

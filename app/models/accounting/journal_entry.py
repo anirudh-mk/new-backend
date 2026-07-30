@@ -16,9 +16,9 @@ if TYPE_CHECKING:
     from app.models.accounting.journal_entry_line import JournalEntryLine
     from app.models.accounting.journal_status import JournalStatus
     from app.models.accounting.voucher_type import VoucherType
-    from app.models.company.branch import Branch
-    from app.models.company.company import Company
-    from app.models.user import User
+    pass  # decoupled: from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.user import User
 
 
 class JournalEntry(AuditModel):
@@ -106,14 +106,12 @@ class JournalEntry(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company that owns this journal entry.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Branch where the transaction was recorded.",
@@ -192,18 +190,11 @@ class JournalEntry(AuditModel):
     )
 
     posted_by_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id", ondelete="SET NULL"),
         nullable=True,
         doc="User who posted the journal entry.",
     )
 
-    company: Mapped["Company"] = relationship(
-        back_populates="journal_entries",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="journal_entries",
-    )
 
     fiscal_year: Mapped["FiscalYear"] = relationship(
         back_populates="journal_entries",
@@ -221,9 +212,6 @@ class JournalEntry(AuditModel):
         back_populates="journal_entries",
     )
 
-    posted_by: Mapped["User | None"] = relationship(
-        foreign_keys=[posted_by_id],
-    )
 
     journal_entry_lines: Mapped[list["JournalEntryLine"]] = relationship(
         back_populates="journal_entry",

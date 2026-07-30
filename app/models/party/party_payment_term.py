@@ -14,7 +14,7 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.party.party import Party
-    from app.models.accounting.payment_term import PaymentTerm
+    pass  # decoupled: from app.models.accounting.payment_term import PaymentTerm
 
 
 class PartyPaymentTerm(AuditModel):
@@ -83,7 +83,6 @@ class PartyPaymentTerm(AuditModel):
     )
 
     payment_term_id: Mapped[UUID] = mapped_column(
-        ForeignKey("payment_terms.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Payment Term assigned to the Party.",
@@ -111,10 +110,4 @@ class PartyPaymentTerm(AuditModel):
         back_populates="payment_terms",
         lazy="selectin",
         doc="Party associated with this payment term assignment.",
-    )
-
-    payment_term: Mapped["PaymentTerm"] = relationship(
-        back_populates="party_mappings",
-        lazy="selectin",
-        doc="Payment Term assigned to the Party.",
     )

@@ -17,10 +17,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
     from app.models.core.document_type import DocumentType
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class AuditHistory(BaseModel):
@@ -31,14 +31,12 @@ class AuditHistory(BaseModel):
     __tablename__ = "audit_histories"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this audit record.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this audit record.",
@@ -65,7 +63,6 @@ class AuditHistory(BaseModel):
     )
 
     performed_by: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who performed the action.",
@@ -103,10 +100,7 @@ class AuditHistory(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
     document_type: Mapped["DocumentType"] = relationship()
-    performed_by_user: Mapped["User"] = relationship(foreign_keys=[performed_by])
 
     def __repr__(self) -> str:
         return f"<AuditHistory(document_id='{self.document_id}', action='{self.action}')>"

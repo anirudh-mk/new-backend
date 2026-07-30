@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.party.party_attachment import PartyAttachment
+    pass  # decoupled: from app.models.party.party_attachment import PartyAttachment
 
 
 class AttachmentType(AuditModel):
@@ -111,10 +111,3 @@ class AttachmentType(AuditModel):
     )
 
     # Relationships
-
-    attachments: Mapped[list["PartyAttachment"]] = relationship(
-        back_populates="attachment_type",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-        doc="Collection of Party Attachments assigned to this attachment type.",
-    )

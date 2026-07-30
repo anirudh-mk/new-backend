@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.purchase.invoice.purchase_invoice import PurchaseInvoice
 
 
@@ -93,7 +93,6 @@ class PurchaseInvoiceType(BaseModel):
     )
 
     company_id: Mapped[int | None] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=True,
         index=True,
         doc="Company owning this invoice type. NULL indicates a global invoice type.",
@@ -149,7 +148,6 @@ class PurchaseInvoiceType(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
     purchase_invoices: Mapped[list["PurchaseInvoice"]] = relationship(
         back_populates="invoice_type",

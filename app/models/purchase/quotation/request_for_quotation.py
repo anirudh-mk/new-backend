@@ -10,11 +10,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
     from app.models.purchase.purchase_requisition import PurchaseRequisition
     from app.models.purchase.supplier_quotation import SupplierQuotation
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class RequestForQuotation(AuditModel):
@@ -124,14 +124,12 @@ class RequestForQuotation(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company issuing the RFQ.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch issuing the RFQ.",
@@ -157,7 +155,6 @@ class RequestForQuotation(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current workflow status of the RFQ.",
@@ -167,15 +164,12 @@ class RequestForQuotation(AuditModel):
     # Relationships
     # ------------------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     purchase_requisition: Mapped["PurchaseRequisition"] = relationship(
         back_populates="request_for_quotations",
     )
 
-    status: Mapped["JournalStatus"] = relationship()
 
     supplier_quotations: Mapped[list["SupplierQuotation"]] = relationship(
         back_populates="request_for_quotation",

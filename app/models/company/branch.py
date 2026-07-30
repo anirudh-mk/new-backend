@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from app.models.company.company import Company
     from app.models.company.branch_address import BranchAddress
     from app.models.company.branch_contact import BranchContact
-    from app.models.accounting.tax_type import TaxType
+    pass  # decoupled: from app.models.accounting.tax_type import TaxType
 
 
 class Branch(AuditModel):
@@ -58,7 +58,6 @@ class Branch(AuditModel):
     )
 
     tax_type_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("company_tax_types.id", ondelete="SET NULL"),
         nullable=True,
         doc="The branch-specific tax scheme/type registered (if different from Company).",
     )
@@ -92,7 +91,6 @@ class Branch(AuditModel):
         doc="Contact methods registered under this branch.",
     )
 
-    tax_type: Mapped["TaxType"] = relationship()
 
     def __repr__(self) -> str:
         return f"<Branch(id={self.id}, code='{self.code}', name='{self.name}')>"

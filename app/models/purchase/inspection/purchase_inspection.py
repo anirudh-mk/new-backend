@@ -15,9 +15,9 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.authentication.user import User
-    from app.models.company.company.branch import Branch
-    from app.models.company.company.company import Company
-    from app.models.core.journal_status import JournalStatus
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.core.journal_status import JournalStatus
     from app.models.purchase.receipt.purchase_receipt import PurchaseReceipt
     from app.models.purchase.inspection.purchase_inspection_item import PurchaseInspectionItem
 
@@ -89,14 +89,12 @@ class PurchaseInspection(BaseModel):
     __tablename__ = "purchase_inspections"
 
     company_id: Mapped[int] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this inspection.",
     )
 
     branch_id: Mapped[int] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch where the inspection was performed.",
@@ -124,14 +122,12 @@ class PurchaseInspection(BaseModel):
     )
 
     inspected_by: Mapped[int] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who performed the inspection.",
     )
 
     status_id: Mapped[int] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current inspection status.",
@@ -147,17 +143,11 @@ class PurchaseInspection(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     purchase_receipt: Mapped["PurchaseReceipt"] = relationship()
 
-    inspector: Mapped["User"] = relationship(
-        foreign_keys=[inspected_by],
-    )
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseInspectionItem"]] = relationship(
         back_populates="purchase_inspection",

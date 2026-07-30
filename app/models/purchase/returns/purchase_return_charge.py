@@ -13,7 +13,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.accounting.charge_type import ChargeType
+    pass  # decoupled: from app.models.accounting.charge_type import ChargeType
     from app.models.purchase.returns.purchase_return import PurchaseReturn
 
 
@@ -32,7 +32,6 @@ class PurchaseReturnCharge(BaseModel):
     )
 
     charge_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("charge_types.id"),
         nullable=False,
         index=True,
         doc="Type of additional charge.",
@@ -78,7 +77,6 @@ class PurchaseReturnCharge(BaseModel):
 
     # Relationships
     purchase_return: Mapped["PurchaseReturn"] = relationship(back_populates="charges")
-    charge_type: Mapped["ChargeType"] = relationship()
 
     def __repr__(self) -> str:
         return f"<PurchaseReturnCharge(return_id='{self.purchase_return_id}', total={self.line_total})>"

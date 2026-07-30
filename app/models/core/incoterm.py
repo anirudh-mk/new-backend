@@ -12,7 +12,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.purchase.order.purchase_order import PurchaseOrder
+    pass  # decoupled: from app.models.purchase.order.purchase_order import PurchaseOrder
     from app.models.sales.sales_order import SalesOrder
 
 
@@ -79,9 +79,6 @@ class Incoterm(AuditModel):
     # Relationships
     # ---------------------------------------------------------
 
-    purchase_orders: Mapped[list["PurchaseOrder"]] = relationship(
-        back_populates="incoterm"
-    )
 
     sales_orders: Mapped[list["SalesOrder"]] = relationship(
         back_populates="incoterm"

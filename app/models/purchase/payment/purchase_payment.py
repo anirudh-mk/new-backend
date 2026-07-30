@@ -16,14 +16,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.accounting.bank_account import BankAccount
-    from app.models.core.currency import Currency
-    from app.models.user.user import User
-    from app.models.company.company.branch import Branch
-    from app.models.company.company.company import Company
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.accounting.bank_account import BankAccount
+    pass  # decoupled: from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.user.user import User
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.finance.payment_method import PaymentMethod
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.payment.purchase_payment_allocation import PurchasePaymentAllocation
 
 
@@ -35,21 +35,18 @@ class PurchasePayment(BaseModel):
     __tablename__ = "purchase_payments"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this payment.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this payment.",
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
         doc="Supplier/party receiving the payment.",
@@ -77,7 +74,6 @@ class PurchasePayment(BaseModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
         doc="Payment currency.",
@@ -97,7 +93,6 @@ class PurchasePayment(BaseModel):
     )
 
     bank_account_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("bank_accounts.id"),
         nullable=True,
         index=True,
         doc="Bank account used for the payment.",
@@ -116,19 +111,12 @@ class PurchasePayment(BaseModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
-    supplier: Mapped["Party"] = relationship()
     payment_method: Mapped["PaymentMethod"] = relationship()
-    currency: Mapped["Currency"] = relationship()
-    bank_account: Mapped["BankAccount"] = relationship()
-    status: Mapped["JournalStatus"] = relationship()
 
     allocations: Mapped[list["PurchasePaymentAllocation"]] = relationship(
         back_populates="payment",

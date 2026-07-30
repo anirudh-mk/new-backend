@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.party.party_payment_term import PartyPaymentTerm
+    pass  # decoupled: from app.models.party.party_payment_term import PartyPaymentTerm
 
 
 class PaymentTerm(AuditModel):
@@ -128,10 +128,3 @@ class PaymentTerm(AuditModel):
     )
 
     # Relationships
-
-    party_mappings: Mapped[list["PartyPaymentTerm"]] = relationship(
-        back_populates="payment_term",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-        doc="Collection of Parties assigned to this payment term.",
-    )

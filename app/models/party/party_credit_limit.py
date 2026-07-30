@@ -16,8 +16,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.party.party import Party
 
 
@@ -81,7 +81,6 @@ class PartyCreditLimit(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company to which this credit policy belongs.",
@@ -95,7 +94,6 @@ class PartyCreditLimit(AuditModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Currency in which the credit limit is defined.",
@@ -143,18 +141,9 @@ class PartyCreditLimit(AuditModel):
 
     # Relationships
 
-    company: Mapped["Company"] = relationship(
-        lazy="selectin",
-        doc="Company that owns this credit policy.",
-    )
 
     party: Mapped["Party"] = relationship(
         back_populates="credit_limits",
         lazy="selectin",
         doc="Party associated with this credit policy.",
-    )
-
-    currency: Mapped["Currency"] = relationship(
-        lazy="selectin",
-        doc="Currency used for the credit limit.",
     )

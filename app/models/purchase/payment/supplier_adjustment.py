@@ -16,12 +16,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.purchase.payment.supplier_debit_note import SupplierDebitNote
     from app.models.purchase.invoice.purchase_invoice import PurchaseInvoice
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class SupplierAdjustment(AuditModel):
@@ -32,19 +32,16 @@ class SupplierAdjustment(AuditModel):
     __tablename__ = "supplier_adjustments"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -95,19 +92,14 @@ class SupplierAdjustment(AuditModel):
     )
 
     adjusted_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who logged the adjustment.",
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
-    supplier: Mapped["Party"] = relationship()
     debit_note: Mapped["SupplierDebitNote"] = relationship()
     purchase_invoice: Mapped["PurchaseInvoice"] = relationship()
-    adjusted_by: Mapped["User"] = relationship(foreign_keys=[adjusted_by_id])
 
     def __repr__(self) -> str:
         return f"<SupplierAdjustment(adjustment_no='{self.adjustment_no}', amount={self.adjustment_amount})>"

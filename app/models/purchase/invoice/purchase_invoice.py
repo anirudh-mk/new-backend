@@ -17,15 +17,15 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.purchase.purchase_order import PurchaseOrder
     from app.models.purchase.purchase_receipt import PurchaseReceipt
     from app.models.purchase.purchase_invoice_item import PurchaseInvoiceItem
-    from app.models.accounting.payment_term import PaymentTerm
-    from app.models.accounting.journal_status import JournalStatus
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.accounting.payment_term import PaymentTerm
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.purchase.purchase_invoice_type import PurchaseInvoiceType
 
 
@@ -108,13 +108,11 @@ class PurchaseInvoice(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -132,13 +130,11 @@ class PurchaseInvoice(AuditModel):
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
     )
@@ -150,7 +146,6 @@ class PurchaseInvoice(AuditModel):
     )
 
     payment_term_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("payment_terms.id"),
         nullable=True,
     )
 
@@ -211,7 +206,6 @@ class PurchaseInvoice(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -230,11 +224,8 @@ class PurchaseInvoice(AuditModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
-    supplier: Mapped["Party"] = relationship()
 
     purchase_order: Mapped["PurchaseOrder"] = relationship(
         back_populates="invoices",
@@ -244,13 +235,10 @@ class PurchaseInvoice(AuditModel):
         back_populates="purchase_invoices",
     )
 
-    currency: Mapped["Currency"] = relationship()
 
-    payment_term: Mapped["PaymentTerm"] = relationship()
 
     invoice_type: Mapped["PurchaseInvoiceType"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseInvoiceItem"]] = relationship(
         back_populates="purchase_invoice",
@@ -277,34 +265,5 @@ class PurchaseInvoice(AuditModel):
         cascade="all, delete-orphan",
     )
 
-    attachments: Mapped[list["DocumentAttachment"]] = relationship(
-        "DocumentAttachment",
-        primaryjoin="and_(DocumentAttachment.document_id == PurchaseInvoice.id, "
-                    "DocumentAttachment.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PINV').scalar_subquery())",
-        foreign_keys="[DocumentAttachment.document_id]",
-        cascade="all, delete-orphan",
-    )
 
-    approvals: Mapped[list["Approval"]] = relationship(
-        "Approval",
-        primaryjoin="and_(Approval.document_id == PurchaseInvoice.id, "
-                    "Approval.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PINV').scalar_subquery())",
-        foreign_keys="[Approval.document_id]",
-        cascade="all, delete-orphan",
-    )
 
-    status_history: Mapped[list["StatusHistory"]] = relationship(
-        "StatusHistory",
-        primaryjoin="and_(StatusHistory.document_id == PurchaseInvoice.id, "
-                    "StatusHistory.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PINV').scalar_subquery())",
-        foreign_keys="[StatusHistory.document_id]",
-        cascade="all, delete-orphan",
-    )
-
-    audit_history: Mapped[list["AuditHistory"]] = relationship(
-        "AuditHistory",
-        primaryjoin="and_(AuditHistory.document_id == PurchaseInvoice.id, "
-                    "AuditHistory.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PINV').scalar_subquery())",
-        foreign_keys="[AuditHistory.document_id]",
-        cascade="all, delete-orphan",
-    )

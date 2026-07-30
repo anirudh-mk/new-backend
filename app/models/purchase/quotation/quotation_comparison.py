@@ -18,11 +18,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
     from app.models.purchase.quotation.request_for_quotation import RequestForQuotation
     from app.models.purchase.requisition.purchase_requisition import PurchaseRequisition
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.quotation.supplier_quotation import SupplierQuotation
     from app.models.purchase.quotation.supplier_quotation_item import SupplierQuotationItem
     from app.models.inventory.product import Product
@@ -37,13 +37,11 @@ class QuotationComparison(AuditModel):
     __tablename__ = "quotation_comparisons"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -77,7 +75,6 @@ class QuotationComparison(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -88,11 +85,8 @@ class QuotationComparison(AuditModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
     rfq: Mapped["RequestForQuotation"] = relationship()
     requisition: Mapped["PurchaseRequisition"] = relationship()
-    status: Mapped["JournalStatus"] = relationship()
 
     details: Mapped[list["QuotationComparisonDetail"]] = relationship(
         back_populates="comparison",

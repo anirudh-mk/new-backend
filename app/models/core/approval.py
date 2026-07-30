@@ -16,11 +16,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
     from app.models.core.document_type import DocumentType
-    from app.models.user.user import User
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.user.user import User
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.core.approval_history import ApprovalHistory
 
 
@@ -32,14 +32,12 @@ class Approval(BaseModel):
     __tablename__ = "approvals"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this approval.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this approval.",
@@ -67,14 +65,12 @@ class Approval(BaseModel):
     )
 
     approver_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User responsible for approving.",
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current approval status.",
@@ -93,11 +89,7 @@ class Approval(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
     document_type: Mapped["DocumentType"] = relationship()
-    approver: Mapped["User"] = relationship()
-    status: Mapped["JournalStatus"] = relationship()
     
     approval_history: Mapped[list["ApprovalHistory"]] = relationship(
         back_populates="approval",

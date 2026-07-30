@@ -14,8 +14,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.core.country import Country
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.core.country import Country
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.party.party import Party
 
 
@@ -139,14 +139,12 @@ class PartyBankAccount(AuditModel):
     )
 
     currency_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("currencies.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
         doc="Currency of the bank account.",
     )
 
     country_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("countries.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
         doc="Country where the bank account is maintained.",
@@ -176,12 +174,3 @@ class PartyBankAccount(AuditModel):
         doc="Party associated with this bank account.",
     )
 
-    currency: Mapped["Currency | None"] = relationship(
-        lazy="selectin",
-        doc="Currency in which this bank account operates.",
-    )
-
-    country: Mapped["Country | None"] = relationship(
-        lazy="selectin",
-        doc="Country where the bank account is maintained.",
-    )

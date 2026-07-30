@@ -18,17 +18,17 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.purchase.purchase_requisition import PurchaseRequisition
     from app.models.purchase.supplier_quotation import SupplierQuotation
-    from app.models.core.currency import Currency
-    from app.models.core.address import Address
+    pass  # decoupled: from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.core.address import Address
     from app.models.inventory.warehouse import Warehouse
-    from app.models.accounting.payment_term import PaymentTerm
-    from app.models.accounting.journal_status import JournalStatus
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.accounting.payment_term import PaymentTerm
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.user.user import User
 
     from app.models.purchase.purchase_order_item import PurchaseOrderItem
     from app.models.purchase.purchase_receipt import PurchaseReceipt
@@ -102,19 +102,16 @@ class PurchaseOrder(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -132,20 +129,17 @@ class PurchaseOrder(AuditModel):
     )
 
     buyer_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
         index=True,
         doc="Purchasing officer responsible for this order.",
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
     )
 
     incoterm_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("incoterms.id"),
         nullable=True,
         index=True,
     )
@@ -162,12 +156,10 @@ class PurchaseOrder(AuditModel):
     )
 
     billing_address_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("addresses.id"),
         nullable=True,
     )
 
     shipping_address_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("addresses.id"),
         nullable=True,
     )
 
@@ -177,7 +169,6 @@ class PurchaseOrder(AuditModel):
     )
 
     payment_term_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("payment_terms.id"),
         nullable=True,
     )
 
@@ -218,7 +209,6 @@ class PurchaseOrder(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
     )
 
@@ -238,7 +228,6 @@ class PurchaseOrder(AuditModel):
     )
 
     approved_by: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
     )
 
@@ -291,7 +280,6 @@ class PurchaseOrder(AuditModel):
     )
 
     cancelled_by_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
         doc="User who cancelled the order.",
     )
@@ -306,11 +294,8 @@ class PurchaseOrder(AuditModel):
     # Relationships
     # ----------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
-    supplier: Mapped["Party"] = relationship()
 
     supplier_quotation: Mapped["SupplierQuotation"] = relationship(
         back_populates="purchase_orders"
@@ -318,29 +303,14 @@ class PurchaseOrder(AuditModel):
 
     purchase_requisition: Mapped["PurchaseRequisition"] = relationship()
 
-    buyer: Mapped["User"] = relationship(
-        foreign_keys=[buyer_id]
-    )
 
-    approver: Mapped["User"] = relationship(
-        foreign_keys=[approved_by]
-    )
 
-    currency: Mapped["Currency"] = relationship()
 
-    billing_address: Mapped["Address"] = relationship(
-        foreign_keys=[billing_address_id]
-    )
 
-    shipping_address: Mapped["Address"] = relationship(
-        foreign_keys=[shipping_address_id]
-    )
 
     warehouse: Mapped["Warehouse"] = relationship()
 
-    payment_term: Mapped["PaymentTerm"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseOrderItem"]] = relationship(
         back_populates="purchase_order",
@@ -359,11 +329,8 @@ class PurchaseOrder(AuditModel):
         back_populates="purchase_orders"
     )
 
-    from app.models.core.incoterm import Incoterm
+    pass  # decoupled: from app.models.core.incoterm import Incoterm
 
-    incoterm: Mapped["Incoterm"] = relationship(
-        back_populates="purchase_orders"
-    )
 
     contract_id: Mapped[UUID | None] = mapped_column(
         ForeignKey("supplier_contracts.id"),
@@ -385,37 +352,9 @@ class PurchaseOrder(AuditModel):
         cascade="all, delete-orphan",
     )
 
-    attachments: Mapped[list["DocumentAttachment"]] = relationship(
-        "DocumentAttachment",
-        primaryjoin="and_(DocumentAttachment.document_id == PurchaseOrder.id, "
-                    "DocumentAttachment.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PO').scalar_subquery())",
-        foreign_keys="[DocumentAttachment.document_id]",
-        cascade="all, delete-orphan",
-    )
 
-    approvals: Mapped[list["Approval"]] = relationship(
-        "Approval",
-        primaryjoin="and_(Approval.document_id == PurchaseOrder.id, "
-                    "Approval.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PO').scalar_subquery())",
-        foreign_keys="[Approval.document_id]",
-        cascade="all, delete-orphan",
-    )
 
-    status_history: Mapped[list["StatusHistory"]] = relationship(
-        "StatusHistory",
-        primaryjoin="and_(StatusHistory.document_id == PurchaseOrder.id, "
-                    "StatusHistory.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PO').scalar_subquery())",
-        foreign_keys="[StatusHistory.document_id]",
-        cascade="all, delete-orphan",
-    )
 
-    audit_history: Mapped[list["AuditHistory"]] = relationship(
-        "AuditHistory",
-        primaryjoin="and_(AuditHistory.document_id == PurchaseOrder.id, "
-                    "AuditHistory.document_type_id == select(DocumentType.id).where(DocumentType.code == 'PO').scalar_subquery())",
-        foreign_keys="[AuditHistory.document_id]",
-        cascade="all, delete-orphan",
-    )
 
     revisions: Mapped[list["PurchaseOrderRevision"]] = relationship(
         back_populates="purchase_order",
@@ -429,8 +368,4 @@ class PurchaseOrder(AuditModel):
 
     releases: Mapped[list[PurchaseOrder]] = relationship(
         back_populates="blanket_order",
-    )
-
-    cancelled_by: Mapped[User | None] = relationship(
-        foreign_keys=[cancelled_by_id]
     )

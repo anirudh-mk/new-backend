@@ -15,17 +15,17 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.inventory.warehouse import Warehouse
     from app.models.purchase.purchase_order import PurchaseOrder
     from app.models.purchase.purchase_receipt_item import PurchaseReceiptItem
     from app.models.purchase.landed_cost import LandedCost
     from app.models.purchase.purchase_invoice import PurchaseInvoice
     from app.models.purchase.purchase_receipt_type import PurchaseReceiptType
-    from app.models.accounting.journal_status import JournalStatus
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.user.user import User
 
 
 class PurchaseReceipt(AuditModel):
@@ -95,13 +95,11 @@ class PurchaseReceipt(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -113,7 +111,6 @@ class PurchaseReceipt(AuditModel):
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -132,7 +129,6 @@ class PurchaseReceipt(AuditModel):
     )
 
     received_by: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who received the goods.",
@@ -164,7 +160,6 @@ class PurchaseReceipt(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -173,23 +168,18 @@ class PurchaseReceipt(AuditModel):
     # Relationships
     # ----------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     purchase_order: Mapped["PurchaseOrder"] = relationship(
         back_populates="receipts",
     )
 
-    supplier: Mapped["Party"] = relationship()
 
     warehouse: Mapped["Warehouse"] = relationship()
 
     receipt_type: Mapped["PurchaseReceiptType"] = relationship()
 
-    received_user: Mapped["User"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseReceiptItem"]] = relationship(
         back_populates="purchase_receipt",

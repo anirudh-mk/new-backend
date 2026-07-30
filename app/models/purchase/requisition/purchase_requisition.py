@@ -10,13 +10,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.user.user import User
     from app.models.purchase.purchase_requisition_item import PurchaseRequisitionItem
     from app.models.purchase.purchase_approval import PurchaseApproval
     from app.models.purchase.purchase_attachment import PurchaseAttachment
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class PurchaseRequisition(AuditModel):
@@ -130,21 +130,18 @@ class PurchaseRequisition(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this purchase requisition.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch where the purchase requirement originated.",
     )
 
     requested_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="Employee or user who raised the purchase requisition.",
@@ -170,7 +167,6 @@ class PurchaseRequisition(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current workflow status of the purchase requisition.",
@@ -198,13 +194,9 @@ class PurchaseRequisition(AuditModel):
 
     # Relationships
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
-    requested_by: Mapped["User"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["PurchaseRequisitionItem"]] = relationship(
         back_populates="purchase_requisition",

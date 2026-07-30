@@ -10,7 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.accounting.accounting_period import AccountingPeriod
     from app.models.accounting.journal_entry import JournalEntry
 
@@ -69,7 +69,6 @@ class FiscalYear(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company to which this fiscal year belongs.",
@@ -107,9 +106,6 @@ class FiscalYear(AuditModel):
         doc="Indicates whether the fiscal year is active.",
     )
 
-    company: Mapped["Company"] = relationship(
-        back_populates="fiscal_years",
-    )
 
     accounting_periods: Mapped[list["AccountingPeriod"]] = relationship(
         back_populates="fiscal_year",

@@ -15,9 +15,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.core.journal_status import JournalStatus
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.core.journal_status import JournalStatus
     from app.models.purchase.invoice.purchase_invoice import PurchaseInvoice
 
 
@@ -90,14 +90,12 @@ class PurchasePaymentSchedule(BaseModel):
     __tablename__ = "purchase_payment_schedules"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this payment schedule.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this payment schedule.",
@@ -142,7 +140,6 @@ class PurchasePaymentSchedule(BaseModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current payment schedule status.",
@@ -158,12 +155,8 @@ class PurchasePaymentSchedule(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     purchase_invoice: Mapped["PurchaseInvoice"] = relationship(
         back_populates="payment_schedules",
     )
-
-    status: Mapped["JournalStatus"] = relationship()

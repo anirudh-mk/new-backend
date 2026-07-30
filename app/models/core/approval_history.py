@@ -16,8 +16,8 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.core.approval import Approval
-    from app.models.user.user import User
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.user.user import User
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class ApprovalHistory(BaseModel):
@@ -41,14 +41,12 @@ class ApprovalHistory(BaseModel):
     )
 
     approver_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="Approver for this level.",
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Status set at this level.",
@@ -69,8 +67,6 @@ class ApprovalHistory(BaseModel):
 
     # Relationships
     approval: Mapped["Approval"] = relationship(back_populates="approval_history")
-    approver: Mapped["User"] = relationship()
-    status: Mapped["JournalStatus"] = relationship()
 
     def __repr__(self) -> str:
         return f"<ApprovalHistory(approval_id='{self.approval_id}', level={self.level})>"

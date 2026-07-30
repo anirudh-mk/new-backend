@@ -8,10 +8,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.party.party import Party
-    from app.models.party.party_bank_account import PartyBankAccount
-    from app.models.party.party_credit_limit import PartyCreditLimit
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.party.party import Party
+    pass  # decoupled: from app.models.party.party_bank_account import PartyBankAccount
+    pass  # decoupled: from app.models.party.party_credit_limit import PartyCreditLimit
 
 
 class Currency(AuditModel):
@@ -125,26 +125,5 @@ class Currency(AuditModel):
 
     # Relationships
 
-    companies: Mapped[list["Company"]] = relationship(
-        back_populates="currency",
-        lazy="selectin",
-        doc="Companies using this currency as their base currency.",
-    )
 
-    parties: Mapped[list["Party"]] = relationship(
-        back_populates="currency",
-        lazy="selectin",
-        doc="Parties whose default transaction currency is this currency.",
-    )
 
-    bank_accounts: Mapped[list["PartyBankAccount"]] = relationship(
-        back_populates="currency",
-        lazy="selectin",
-        doc="Bank accounts maintained in this currency.",
-    )
-
-    credit_limits: Mapped[list["PartyCreditLimit"]] = relationship(
-        back_populates="currency",
-        lazy="selectin",
-        doc="Credit limits defined in this currency.",
-    )

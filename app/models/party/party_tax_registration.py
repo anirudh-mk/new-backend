@@ -15,7 +15,7 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.party.party import Party
-    from app.models.accounting.tax_type import TaxType
+    pass  # decoupled: from app.models.accounting.tax_type import TaxType
 
 
 class PartyTaxRegistration(AuditModel):
@@ -86,7 +86,6 @@ class PartyTaxRegistration(AuditModel):
     )
 
     tax_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("company_tax_types.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Type of tax registration (GST, VAT, PAN, etc.).",
@@ -153,9 +152,4 @@ class PartyTaxRegistration(AuditModel):
         back_populates="tax_registrations",
         lazy="selectin",
         doc="Party associated with this tax registration.",
-    )
-
-    tax_type: Mapped["TaxType"] = relationship(
-        lazy="selectin",
-        doc="Tax registration type assigned to the Party.",
     )

@@ -10,14 +10,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.party import Party
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.purchase.request_for_quotation import RequestForQuotation
     from app.models.purchase.supplier_quotation_item import SupplierQuotationItem
     from app.models.purchase.purchase_order import PurchaseOrder
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class SupplierQuotation(AuditModel):
@@ -132,14 +132,12 @@ class SupplierQuotation(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company receiving the supplier quotation.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch responsible for the quotation.",
@@ -153,7 +151,6 @@ class SupplierQuotation(AuditModel):
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
         doc="Supplier submitting the quotation.",
@@ -172,7 +169,6 @@ class SupplierQuotation(AuditModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
         doc="Currency used in the quotation.",
@@ -227,7 +223,6 @@ class SupplierQuotation(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
         doc="Current workflow status of the supplier quotation.",
@@ -244,19 +239,14 @@ class SupplierQuotation(AuditModel):
     # Relationships
     # ------------------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     request_for_quotation: Mapped["RequestForQuotation"] = relationship(
         back_populates="supplier_quotations",
     )
 
-    supplier: Mapped["Party"] = relationship()
 
-    currency: Mapped["Currency"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["SupplierQuotationItem"]] = relationship(
         back_populates="supplier_quotation",

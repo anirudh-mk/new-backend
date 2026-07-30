@@ -16,10 +16,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
     from app.models.core.document_type import DocumentType
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class DocumentAttachment(BaseModel):
@@ -30,14 +30,12 @@ class DocumentAttachment(BaseModel):
     __tablename__ = "document_attachments"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this attachment.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this attachment.",
@@ -93,7 +91,6 @@ class DocumentAttachment(BaseModel):
     )
 
     uploaded_by: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who uploaded the attachment.",
@@ -113,10 +110,7 @@ class DocumentAttachment(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
     document_type: Mapped["DocumentType"] = relationship()
-    uploaded_by_user: Mapped["User"] = relationship(foreign_keys=[uploaded_by])
 
     def __repr__(self) -> str:
         return f"<DocumentAttachment(file_name='{self.file_name}', type='{self.file_extension}')>"

@@ -16,15 +16,15 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.compan.branch import Branch
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.purchase.purchase_receipt import PurchaseReceipt
     from app.models.purchase.landed_cost_item import LandedCostItem
     from app.models.purchase.landed_cost_allocation_method import (
         LandedCostAllocationMethod,
     )
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
 
 
 class LandedCost(AuditModel):
@@ -93,13 +93,11 @@ class LandedCost(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -112,7 +110,6 @@ class LandedCost(AuditModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
     )
@@ -145,7 +142,6 @@ class LandedCost(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -168,19 +164,15 @@ class LandedCost(AuditModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    branch: Mapped["Branch"] = relationship()
 
     purchase_receipt: Mapped["PurchaseReceipt"] = relationship(
         back_populates="landed_costs",
     )
 
-    currency: Mapped["Currency"] = relationship()
 
     allocation_method: Mapped["LandedCostAllocationMethod"] = relationship()
 
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["LandedCostItem"]] = relationship(
         back_populates="landed_cost",

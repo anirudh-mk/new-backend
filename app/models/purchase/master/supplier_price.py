@@ -17,11 +17,11 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.inventory.product import Product
     from app.models.inventory.uom import UOM
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.purchase.supplier_price_type import SupplierPriceType
     from app.models.purchase.master.supplier_price_history import SupplierPriceHistory
 
@@ -167,14 +167,12 @@ class SupplierPrice(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this supplier price record.",
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
         doc="Supplier offering the product.",
@@ -195,7 +193,6 @@ class SupplierPrice(AuditModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
         doc="Currency in which the purchase price is maintained.",
@@ -268,15 +265,12 @@ class SupplierPrice(AuditModel):
     # Relationships
     # ------------------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
-    supplier: Mapped["Party"] = relationship()
 
     product: Mapped["Product"] = relationship()
 
     uom: Mapped["UOM"] = relationship()
 
-    currency: Mapped["Currency"] = relationship()
 
     price_type: Mapped["SupplierPriceType"] = relationship()
 

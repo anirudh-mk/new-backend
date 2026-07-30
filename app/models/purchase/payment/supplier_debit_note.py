@@ -16,12 +16,12 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.purchase.returns.purchase_return import PurchaseReturn
-    from app.models.core.currency import Currency
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.returns.purchase_return_item import PurchaseReturnItem
     from app.models.inventory.product import Product
     from app.models.inventory.product_variant import ProductVariant
@@ -36,19 +36,16 @@ class SupplierDebitNote(AuditModel):
     __tablename__ = "supplier_debit_notes"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -75,7 +72,6 @@ class SupplierDebitNote(AuditModel):
     )
 
     currency_id: Mapped[UUID] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=False,
         index=True,
     )
@@ -112,18 +108,12 @@ class SupplierDebitNote(AuditModel):
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
-    supplier: Mapped["Party"] = relationship()
     purchase_return: Mapped["PurchaseReturn"] = relationship()
-    currency: Mapped["Currency"] = relationship()
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["SupplierDebitNoteItem"]] = relationship(
         back_populates="debit_note",

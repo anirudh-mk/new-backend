@@ -16,7 +16,7 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.purchase.master.supplier_price import SupplierPrice
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class SupplierPriceHistory(BaseModel):
@@ -47,7 +47,6 @@ class SupplierPriceHistory(BaseModel):
     )
 
     changed_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who updated the price.",
@@ -61,7 +60,6 @@ class SupplierPriceHistory(BaseModel):
 
     # Relationships
     supplier_price: Mapped["SupplierPrice"] = relationship(back_populates="history")
-    changed_by: Mapped["User"] = relationship(foreign_keys=[changed_by_id])
 
     def __repr__(self) -> str:
         return f"<SupplierPriceHistory(supplier_price_id='{self.supplier_price_id}', price={self.price}, changed_at='{self.changed_at}')>"

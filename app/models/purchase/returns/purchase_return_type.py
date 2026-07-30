@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.purchase.returns.purchase_return import PurchaseReturn
 
 
@@ -91,7 +91,6 @@ class PurchaseReturnType(BaseModel):
     )
 
     company_id: Mapped[int | None] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=True,
         index=True,
         doc="Company owning this return type. NULL indicates a global return type.",
@@ -133,7 +132,6 @@ class PurchaseReturnType(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
     purchase_returns: Mapped[list["PurchaseReturn"]] = relationship(
         back_populates="return_type",

@@ -10,7 +10,7 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     from app.models.accounting.ledger import Ledger
     from app.models.accounting.tax_type import TaxType
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
 
 
 class Tax(AuditModel):
@@ -131,7 +131,6 @@ class Tax(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company that owns this tax configuration.",
@@ -200,9 +199,6 @@ class Tax(AuditModel):
         doc="Whether this tax configuration is active.",
     )
 
-    company: Mapped["Company"] = relationship(
-        back_populates="taxes",
-    )
 
     tax_type: Mapped["TaxType"] = relationship(
         back_populates="taxes",

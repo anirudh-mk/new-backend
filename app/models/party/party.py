@@ -17,9 +17,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.accounting.ledger import Ledger
-    from app.models.company.company import Company
-    from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.accounting.ledger import Ledger
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.core.currency import Currency
     from app.models.party.party_address import PartyAddress
     from app.models.party.party_attachment import PartyAttachment
     from app.models.party.party_bank_account import PartyBankAccount
@@ -131,7 +131,6 @@ class Party(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company that owns this party.",
@@ -145,14 +144,12 @@ class Party(AuditModel):
     )
 
     ledger_id: Mapped[UUID] = mapped_column(
-        ForeignKey("ledgers.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Ledger associated with this party for accounting transactions.",
     )
 
     currency_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("currencies.id", ondelete="SET NULL"),
         nullable=True,
         index=True,
         doc="Default transaction currency for the party.",
@@ -220,11 +217,6 @@ class Party(AuditModel):
 
     # Relationships
 
-    company: Mapped["Company"] = relationship(
-        back_populates="parties",
-        lazy="selectin",
-        doc="Company that owns this party.",
-    )
 
     party_group: Mapped["PartyGroup | None"] = relationship(
         back_populates="parties",
@@ -232,15 +224,7 @@ class Party(AuditModel):
         doc="Classification group assigned to this party.",
     )
 
-    ledger: Mapped["Ledger"] = relationship(
-        lazy="selectin",
-        doc="Accounting ledger associated with the party.",
-    )
 
-    currency: Mapped["Currency | None"] = relationship(
-        lazy="selectin",
-        doc="Default transaction currency.",
-    )
 
     party_type_mappings: Mapped[list["PartyTypeMapping"]] = relationship(
         back_populates="party",

@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.core.attachment_type import AttachmentType
+    pass  # decoupled: from app.models.core.attachment_type import AttachmentType
     from app.models.party.party import Party
 
 
@@ -84,7 +84,6 @@ class PartyAttachment(AuditModel):
     )
 
     attachment_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("attachment_types.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Classification of the attachment.",
@@ -140,10 +139,4 @@ class PartyAttachment(AuditModel):
         back_populates="attachments",
         lazy="selectin",
         doc="Party associated with this attachment.",
-    )
-
-    attachment_type: Mapped["AttachmentType"] = relationship(
-        back_populates="attachments",
-        lazy="selectin",
-        doc="Classification assigned to this attachment.",
     )

@@ -17,8 +17,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.user.user import User
-    from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.user.user import User
+    pass  # decoupled: from app.models.company.company.company import Company
     from app.models.purchase.order.purchase_order import PurchaseOrder
 
 
@@ -40,7 +40,6 @@ class PurchaseTerms(BaseModel):
     __tablename__ = "purchase_terms"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
@@ -68,12 +67,10 @@ class PurchaseTerms(BaseModel):
     )
 
     created_by_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
     )
 
     updated_by_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("users.id"),
         nullable=True,
     )
 
@@ -91,15 +88,8 @@ class PurchaseTerms(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
 
-    created_by: Mapped["User"] = relationship(
-        foreign_keys=[created_by_id]
-    )
 
-    updated_by: Mapped["User"] = relationship(
-        foreign_keys=[updated_by_id]
-    )
 
     purchase_orders: Mapped[list["PurchaseOrder"]] = relationship(
         back_populates="terms"

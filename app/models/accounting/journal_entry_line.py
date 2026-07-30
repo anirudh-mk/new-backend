@@ -12,7 +12,7 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     from app.models.accounting.journal_entry import JournalEntry
     from app.models.accounting.ledger import Ledger
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.branch import Branch
 
 
 class JournalEntryLine(AuditModel):
@@ -104,7 +104,6 @@ class JournalEntryLine(AuditModel):
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Branch associated with this journal entry line.",
@@ -135,9 +134,5 @@ class JournalEntryLine(AuditModel):
     )
 
     ledger: Mapped["Ledger"] = relationship(
-        back_populates="journal_entry_lines",
-    )
-
-    branch: Mapped["Branch"] = relationship(
         back_populates="journal_entry_lines",
     )

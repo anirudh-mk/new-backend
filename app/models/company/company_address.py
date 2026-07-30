@@ -10,10 +10,10 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.company.company import Company
-    from app.models.core.address_type import AddressType
-    from app.models.core.country import Country
-    from app.models.core.state import State
-    from app.models.core.district import District
+    pass  # decoupled: from app.models.core.address_type import AddressType
+    pass  # decoupled: from app.models.core.country import Country
+    pass  # decoupled: from app.models.core.state import State
+    pass  # decoupled: from app.models.core.district import District
 
 
 class CompanyAddress(AuditModel):
@@ -40,7 +40,6 @@ class CompanyAddress(AuditModel):
     )
 
     address_type_id: Mapped[UUID] = mapped_column(
-        ForeignKey("address_types.id"),
         nullable=False,
         index=True,
         doc="The classification type of the address (Billing, Shipping, etc.).",
@@ -59,21 +58,18 @@ class CompanyAddress(AuditModel):
     )
 
     country_id: Mapped[UUID] = mapped_column(
-        ForeignKey("countries.id"),
         nullable=False,
         index=True,
         doc="Country of the address.",
     )
 
     state_id: Mapped[UUID] = mapped_column(
-        ForeignKey("states.id"),
         nullable=False,
         index=True,
         doc="State or region of the address.",
     )
 
     district_id: Mapped[UUID] = mapped_column(
-        ForeignKey("districts.id"),
         nullable=False,
         index=True,
         doc="District or county of the address.",
@@ -120,10 +116,6 @@ class CompanyAddress(AuditModel):
         back_populates="addresses",
     )
 
-    address_type: Mapped["AddressType"] = relationship()
-    country: Mapped["Country"] = relationship()
-    state: Mapped["State"] = relationship()
-    district: Mapped["District"] = relationship()
 
     def __repr__(self) -> str:
         return f"<CompanyAddress(id={self.id}, line_1='{self.address_line_1}', type_id={self.address_type_id})>"

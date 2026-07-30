@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.party.party import Party
 
 
@@ -108,7 +108,6 @@ class PartyGroup(AuditModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=False,
         index=True,
         doc="Company that owns this Party Group.",
@@ -158,11 +157,6 @@ class PartyGroup(AuditModel):
 
     # Relationships
 
-    company: Mapped["Company"] = relationship(
-        back_populates="party_groups",
-        lazy="selectin",
-        doc="Company that owns this Party Group.",
-    )
 
     parties: Mapped[list["Party"]] = relationship(
         back_populates="party_group",

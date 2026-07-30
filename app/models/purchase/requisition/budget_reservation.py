@@ -14,9 +14,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.accounting.ledger import Ledger
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.accounting.ledger import Ledger
 
 
 class BudgetReservation(AuditModel):
@@ -27,13 +27,11 @@ class BudgetReservation(AuditModel):
     __tablename__ = "budget_reservations"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
@@ -46,7 +44,6 @@ class BudgetReservation(AuditModel):
     )
 
     account_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("ledgers.id"),
         nullable=True,
         index=True,
         doc="Budget ledger account.",
@@ -107,9 +104,6 @@ class BudgetReservation(AuditModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
-    account: Mapped["Ledger"] = relationship()
 
     def __repr__(self) -> str:
         return f"<BudgetReservation(doc_type='{self.document_type}', reserved={self.reserved_amount}, status='{self.status}')>"

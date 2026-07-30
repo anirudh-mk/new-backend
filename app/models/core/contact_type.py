@@ -10,7 +10,7 @@ from app.database.base import AuditModel
 
 if TYPE_CHECKING:
     from app.models.core.contact_category import ContactCategory
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
 
 
 class ContactType(AuditModel):
@@ -31,7 +31,6 @@ class ContactType(AuditModel):
     )
 
     company_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("companies.id", ondelete="CASCADE"),
         nullable=True,
         index=True,
         doc="Optional company ownership (for custom company-defined types).",
@@ -72,7 +71,6 @@ class ContactType(AuditModel):
         back_populates="contact_types",
     )
 
-    company: Mapped["Company" | None] = relationship()
 
     def __repr__(self) -> str:
         return f"<ContactType(id={self.id}, code='{self.code}', name='{self.name}')>"

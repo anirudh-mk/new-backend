@@ -15,7 +15,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.accounting.account_type import AccountType
     from app.models.accounting.ledger import Ledger
 
@@ -133,7 +133,6 @@ class AccountGroup(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this account group.",
@@ -185,7 +184,6 @@ class AccountGroup(BaseModel):
         doc="Indicates whether the account group is active.",
     )
 
-    company: Mapped["Company"] = relationship()
 
     account_type: Mapped["AccountType"] = relationship()
 

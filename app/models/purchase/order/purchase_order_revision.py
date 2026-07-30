@@ -18,7 +18,7 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.purchase.order.purchase_order import PurchaseOrder
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class PurchaseOrderRevision(BaseModel):
@@ -49,7 +49,6 @@ class PurchaseOrderRevision(BaseModel):
     )
 
     revised_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who revised the order.",
@@ -69,7 +68,6 @@ class PurchaseOrderRevision(BaseModel):
 
     # Relationships
     purchase_order: Mapped["PurchaseOrder"] = relationship(back_populates="revisions")
-    revised_by: Mapped["User"] = relationship(foreign_keys=[revised_by_id])
 
     def __repr__(self) -> str:
         return f"<PurchaseOrderRevision(purchase_order_id='{self.purchase_order_id}', rev={self.revision_no})>"

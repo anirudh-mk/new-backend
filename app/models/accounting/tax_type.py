@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.core.country import Country
+    pass  # decoupled: from app.models.core.country import Country
     from app.models.accounting.tax import Tax
 
 
@@ -140,7 +140,6 @@ class TaxType(BaseModel):
     )
 
     country_id: Mapped[UUID] = mapped_column(
-        ForeignKey("countries.id", ondelete="RESTRICT"),
         nullable=False,
         index=True,
         doc="Country where this tax type is applicable.",
@@ -168,9 +167,6 @@ class TaxType(BaseModel):
         nullable=False,
     )
 
-    country: Mapped["Country"] = relationship(
-        back_populates="tax_types",
-    )
 
     taxes: Mapped[list["Tax"]] = relationship(
         back_populates="tax_type",

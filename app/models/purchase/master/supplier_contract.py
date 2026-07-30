@@ -18,10 +18,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.party.party import Party
-    from app.models.core.currency import Currency
-    from app.models.accounting.payment_term import PaymentTerm
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.party.party import Party
+    pass  # decoupled: from app.models.core.currency import Currency
+    pass  # decoupled: from app.models.accounting.payment_term import PaymentTerm
     from app.models.purchase.purchase_order import PurchaseOrder
 
 
@@ -36,13 +36,11 @@ class SupplierContract(AuditModel):
     __tablename__ = "supplier_contracts"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -70,12 +68,10 @@ class SupplierContract(AuditModel):
     )
 
     currency_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("currencies.id"),
         nullable=True,
     )
 
     payment_term_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("payment_terms.id"),
         nullable=True,
     )
 
@@ -95,13 +91,9 @@ class SupplierContract(AuditModel):
         nullable=False,
     )
 
-    company: Mapped["Company"] = relationship()
 
-    supplier: Mapped["Party"] = relationship()
 
-    currency: Mapped["Currency"] = relationship()
 
-    payment_term: Mapped["PaymentTerm"] = relationship()
 
     purchase_orders: Mapped[list["PurchaseOrder"]] = relationship(
         back_populates="contract"

@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.company import Company
 
 
 class InspectionParameter(AuditModel):
@@ -25,7 +25,6 @@ class InspectionParameter(AuditModel):
     __tablename__ = "inspection_parameters"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
@@ -56,7 +55,6 @@ class InspectionParameter(AuditModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
 
     def __repr__(self) -> str:
         return f"<InspectionParameter(code='{self.code}', name='{self.name}')>"

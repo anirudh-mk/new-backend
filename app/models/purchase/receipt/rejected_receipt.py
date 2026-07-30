@@ -16,13 +16,13 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel, BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.company.company.branch import Branch
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.company.company.branch import Branch
+    pass  # decoupled: from app.models.party.party import Party
     from app.models.purchase.receipt.purchase_receipt import PurchaseReceipt
     from app.models.purchase.order.purchase_order import PurchaseOrder
-    from app.models.user.user import User
-    from app.models.accounting.journal_status import JournalStatus
+    pass  # decoupled: from app.models.user.user import User
+    pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.receipt.purchase_receipt_item import PurchaseReceiptItem
     from app.models.purchase.order.purchase_order_item import PurchaseOrderItem
     from app.models.inventory.product import Product
@@ -38,19 +38,16 @@ class RejectedReceipt(AuditModel):
     __tablename__ = "rejected_receipts"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -84,14 +81,12 @@ class RejectedReceipt(AuditModel):
     )
 
     rejected_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who logged the rejection.",
     )
 
     status_id: Mapped[UUID] = mapped_column(
-        ForeignKey("journal_statuses.id"),
         nullable=False,
         index=True,
     )
@@ -102,13 +97,8 @@ class RejectedReceipt(AuditModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
-    supplier: Mapped["Party"] = relationship()
     purchase_receipt: Mapped["PurchaseReceipt"] = relationship()
     purchase_order: Mapped["PurchaseOrder"] = relationship()
-    rejected_by: Mapped["User"] = relationship(foreign_keys=[rejected_by_id])
-    status: Mapped["JournalStatus"] = relationship()
 
     items: Mapped[list["RejectedReceiptItem"]] = relationship(
         back_populates="rejected_receipt",

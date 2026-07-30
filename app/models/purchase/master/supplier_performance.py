@@ -14,8 +14,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company.company import Company
-    from app.models.party.party import Party
+    pass  # decoupled: from app.models.company.company.company import Company
+    pass  # decoupled: from app.models.party.party import Party
 
 
 class SupplierPerformance(BaseModel):
@@ -26,13 +26,11 @@ class SupplierPerformance(BaseModel):
     __tablename__ = "supplier_performances"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
     )
 
     supplier_id: Mapped[UUID] = mapped_column(
-        ForeignKey("parties.id"),
         nullable=False,
         index=True,
     )
@@ -86,8 +84,6 @@ class SupplierPerformance(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    supplier: Mapped["Party"] = relationship()
 
     def __repr__(self) -> str:
         return f"<SupplierPerformance(supplier_id='{self.supplier_id}', score={self.overall_score})>"

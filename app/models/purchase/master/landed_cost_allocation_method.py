@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.company import Company
     from app.models.purchase.master.landed_cost import LandedCost
 
 
@@ -89,7 +89,6 @@ class LandedCostAllocationMethod(BaseModel):
     )
 
     company_id: Mapped[int | None] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=True,
         index=True,
         doc="Company owning this allocation method. NULL indicates a global method.",
@@ -131,7 +130,6 @@ class LandedCostAllocationMethod(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship()
 
     landed_costs: Mapped[list["LandedCost"]] = relationship(
         back_populates="allocation_method",

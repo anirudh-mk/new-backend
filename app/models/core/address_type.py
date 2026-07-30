@@ -8,7 +8,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import AuditModel
 
 if TYPE_CHECKING:
-    from app.models.party.party_address import PartyAddress
+    pass  # decoupled: from app.models.party.party_address import PartyAddress
 
 
 class AddressType(AuditModel):
@@ -111,10 +111,3 @@ class AddressType(AuditModel):
     )
 
     # Relationships
-
-    addresses: Mapped[list["PartyAddress"]] = relationship(
-        back_populates="address_type",
-        cascade="all, delete-orphan",
-        lazy="selectin",
-        doc="Collection of Party Addresses assigned to this address type.",
-    )

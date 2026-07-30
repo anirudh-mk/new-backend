@@ -16,10 +16,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
+    pass  # decoupled: from app.models.company.company import Company
+    pass  # decoupled: from app.models.company.branch import Branch
     from app.models.core.document_type import DocumentType
-    from app.models.user.user import User
+    pass  # decoupled: from app.models.user.user import User
 
 
 class DocumentComment(BaseModel):
@@ -30,14 +30,12 @@ class DocumentComment(BaseModel):
     __tablename__ = "document_comments"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Company that owns this comment.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Branch that owns this comment.",
@@ -64,7 +62,6 @@ class DocumentComment(BaseModel):
     )
 
     commented_by: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who wrote the comment.",
@@ -85,10 +82,7 @@ class DocumentComment(BaseModel):
     )
 
     # Relationships
-    company: Mapped["Company"] = relationship()
-    branch: Mapped["Branch"] = relationship()
     document_type: Mapped["DocumentType"] = relationship()
-    commented_by_user: Mapped["User"] = relationship(foreign_keys=[commented_by])
 
     def __repr__(self) -> str:
         return f"<DocumentComment(document_id='{self.document_id}', commented_by='{self.commented_by}')>"
