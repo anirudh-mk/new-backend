@@ -20,10 +20,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.inventory.product.product import Product
-    from app.models.inventory.product.product_variant import ProductVariant
-    from app.models.inventory.uom.uom import UOM
-    from app.models.inventory.warehouse.warehouse import Warehouse
     from app.models.sales.delivery.delivery_note_item import DeliveryNoteItem
     from app.models.sales.invoice.sales_invoice import SalesInvoice
     from app.models.sales.order.sales_order_item import SalesOrderItem
@@ -197,28 +193,24 @@ class SalesInvoiceItem(BaseModel):
     )
 
     product_id: Mapped[UUID] = mapped_column(
-        ForeignKey("products.id"),
         nullable=False,
         index=True,
         doc="Reference to the Product.",
     )
 
     product_variant_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("product_variants.id"),
         nullable=True,
         index=True,
         doc="Reference to the Product Variant.",
     )
 
     warehouse_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("warehouses.id"),
         nullable=True,
         index=True,
         doc="Warehouse from which the product was supplied.",
     )
 
     uom_id: Mapped[UUID] = mapped_column(
-        ForeignKey("uoms.id"),
         nullable=False,
         index=True,
         doc="Reference to the Unit of Measure.",
@@ -298,18 +290,6 @@ class SalesInvoiceItem(BaseModel):
         back_populates="invoice_items",
     )
 
-    product: Mapped["Product"] = relationship(
-        back_populates="sales_invoice_items",
-    )
 
-    product_variant: Mapped["ProductVariant"] = relationship(
-        back_populates="sales_invoice_items",
-    )
 
-    warehouse: Mapped["Warehouse"] = relationship(
-        back_populates="sales_invoice_items",
-    )
 
-    uom: Mapped["UOM"] = relationship(
-        back_populates="sales_invoice_items",
-    )

@@ -19,7 +19,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.accounting.tax.tax import Tax
     from app.models.sales.quotation.sales_quotation_item import SalesQuotationItem
 
 
@@ -168,7 +167,6 @@ class SalesQuotationItemTax(BaseModel):
     )
 
     tax_id: Mapped[UUID] = mapped_column(
-        ForeignKey("taxes.id"),
         nullable=False,
         index=True,
         doc="Reference to the Tax master.",
@@ -225,6 +223,3 @@ class SalesQuotationItemTax(BaseModel):
         back_populates="taxes",
     )
 
-    tax: Mapped["Tax"] = relationship(
-        back_populates="sales_quotation_item_taxes",
-    )

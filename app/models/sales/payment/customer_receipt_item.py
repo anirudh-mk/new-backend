@@ -218,9 +218,6 @@ class CustomerReceiptItem(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    customer_receipt: Mapped["CustomerReceipt"] = relationship(
-        back_populates="items",
-    )
 
     sales_invoice: Mapped["SalesInvoice"] = relationship(
         back_populates="receipt_items",

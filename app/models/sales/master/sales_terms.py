@@ -18,7 +18,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
     from app.models.sales.quotation.sales_quotation import SalesQuotation
     from app.models.sales.order.sales_order import SalesOrder
     from app.models.sales.invoice.sales_invoice import SalesInvoice
@@ -158,7 +157,6 @@ class SalesTerms(BaseModel):
     __tablename__ = "sales_terms"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company that owns this Sales Terms template.",
@@ -208,9 +206,6 @@ class SalesTerms(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="sales_terms",
-    )
 
     quotations: Mapped[list["SalesQuotation"]] = relationship(
         back_populates="sales_terms",

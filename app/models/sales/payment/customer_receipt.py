@@ -22,10 +22,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.customer.customer import Customer
-    from app.models.accounting.payment.payment_method import PaymentMethod
     from app.models.sales.payment.customer_receipt_item import (
         CustomerReceiptItem,
     )
@@ -163,28 +159,24 @@ class CustomerReceipt(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Reference to the Branch.",
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Customer making the payment.",
     )
 
     payment_method_id: Mapped[UUID] = mapped_column(
-        ForeignKey("payment_methods.id"),
         nullable=False,
         index=True,
         doc="Payment method used for the receipt.",
@@ -260,21 +252,9 @@ class CustomerReceipt(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="customer_receipts",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="customer_receipts",
-    )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="customer_receipts",
-    )
 
-    payment_method: Mapped["PaymentMethod"] = relationship(
-        back_populates="customer_receipts",
-    )
 
     items: Mapped[list["CustomerReceiptItem"]] = relationship(
         back_populates="customer_receipt",

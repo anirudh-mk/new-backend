@@ -22,9 +22,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.customer.customer import Customer
     from app.models.sales.master.sales_person import SalesPerson
     from app.models.sales.master.sales_terms import SalesTerms
     from app.models.sales.master.sales_price_list import SalesPriceList
@@ -145,14 +142,12 @@ class SalesOrder(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Reference to the Branch.",
@@ -166,7 +161,6 @@ class SalesOrder(BaseModel):
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Reference to the Customer.",
@@ -284,21 +278,12 @@ class SalesOrder(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="sales_orders",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="sales_orders",
-    )
 
     quotation: Mapped["SalesQuotation"] = relationship(
         back_populates="sales_orders",
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="sales_orders",
-    )
 
     sales_person: Mapped["SalesPerson"] = relationship(
         back_populates="sales_orders",

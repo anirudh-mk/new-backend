@@ -22,9 +22,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.customer.customer import Customer
     from app.models.sales.invoice.sales_invoice import SalesInvoice
     from app.models.sales.returns.sales_return import SalesReturn
     from app.models.sales.master.sales_person import SalesPerson
@@ -149,21 +146,18 @@ class CreditNote(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Reference to the Branch.",
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Customer receiving the credit.",
@@ -280,17 +274,8 @@ class CreditNote(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="credit_notes",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="credit_notes",
-    )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="credit_notes",
-    )
 
     sales_invoice: Mapped["SalesInvoice"] = relationship(
         back_populates="credit_notes",

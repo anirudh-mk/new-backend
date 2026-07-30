@@ -21,7 +21,6 @@ from app.database.base import BaseModel
 
 if TYPE_CHECKING:
     from app.models.sales.order.sales_order import SalesOrder
-    from app.models.user.user import User
 
 
 class SalesOrderRevision(BaseModel):
@@ -170,7 +169,6 @@ class SalesOrderRevision(BaseModel):
     )
 
     changed_by_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
         nullable=False,
         index=True,
         doc="User who made the revision.",
@@ -214,6 +212,3 @@ class SalesOrderRevision(BaseModel):
         back_populates="revisions",
     )
 
-    changed_by: Mapped["User"] = relationship(
-        back_populates="sales_order_revisions",
-    )

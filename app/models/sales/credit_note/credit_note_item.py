@@ -20,9 +20,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.inventory.product.product import Product
-    from app.models.inventory.product.product_variant import ProductVariant
-    from app.models.inventory.uom.uom import UOM
     from app.models.sales.invoice.sales_invoice_item import SalesInvoiceItem
     from app.models.sales.returns.sales_return_item import SalesReturnItem
     from app.models.sales.credit_note.credit_note import CreditNote
@@ -189,21 +186,18 @@ class CreditNoteItem(BaseModel):
     )
 
     product_id: Mapped[UUID] = mapped_column(
-        ForeignKey("products.id"),
         nullable=False,
         index=True,
         doc="Reference to the Product.",
     )
 
     product_variant_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("product_variants.id"),
         nullable=True,
         index=True,
         doc="Reference to the Product Variant.",
     )
 
     uom_id: Mapped[UUID] = mapped_column(
-        ForeignKey("uoms.id"),
         nullable=False,
         index=True,
         doc="Reference to the Unit of Measure.",
@@ -276,14 +270,5 @@ class CreditNoteItem(BaseModel):
         back_populates="credit_note_items",
     )
 
-    product: Mapped["Product"] = relationship(
-        back_populates="credit_note_items",
-    )
 
-    product_variant: Mapped["ProductVariant"] = relationship(
-        back_populates="credit_note_items",
-    )
 
-    uom: Mapped["UOM"] = relationship(
-        back_populates="credit_note_items",
-    )

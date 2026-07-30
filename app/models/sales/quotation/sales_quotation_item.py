@@ -21,9 +21,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.inventory.product.product import Product
-    from app.models.inventory.product.product_variant import ProductVariant
-    from app.models.inventory.uom.uom import UOM
     from app.models.sales.quotation.sales_quotation import SalesQuotation
 
 
@@ -168,21 +165,18 @@ class SalesQuotationItem(BaseModel):
     )
 
     product_id: Mapped[UUID] = mapped_column(
-        ForeignKey("products.id"),
         nullable=False,
         index=True,
         doc="Reference to the Product.",
     )
 
     product_variant_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("product_variants.id"),
         nullable=True,
         index=True,
         doc="Reference to the Product Variant.",
     )
 
     uom_id: Mapped[UUID] = mapped_column(
-        ForeignKey("uoms.id"),
         nullable=False,
         index=True,
         doc="Reference to the Unit of Measure.",
@@ -255,14 +249,5 @@ class SalesQuotationItem(BaseModel):
         back_populates="items",
     )
 
-    product: Mapped["Product"] = relationship(
-        back_populates="sales_quotation_items",
-    )
 
-    product_variant: Mapped["ProductVariant"] = relationship(
-        back_populates="sales_quotation_items",
-    )
 
-    uom: Mapped["UOM"] = relationship(
-        back_populates="sales_quotation_items",
-    )

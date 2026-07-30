@@ -21,7 +21,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
     from app.models.sales.master.customer_price import CustomerPrice
 
 
@@ -176,7 +175,6 @@ class SalesPriceList(BaseModel):
     __tablename__ = "sales_price_lists"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company that owns this Price List.",
@@ -253,9 +251,6 @@ class SalesPriceList(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="sales_price_lists",
-    )
 
     customer_prices: Mapped[list["CustomerPrice"]] = relationship(
         back_populates="sales_price_list",

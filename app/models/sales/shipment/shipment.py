@@ -22,9 +22,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.customer.customer import Customer
     from app.models.sales.order.sales_order import SalesOrder
     from app.models.sales.delivery.delivery_note import DeliveryNote
     from app.models.sales.master.sales_person import SalesPerson
@@ -163,14 +160,12 @@ class Shipment(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Reference to the Branch.",
@@ -191,7 +186,6 @@ class Shipment(BaseModel):
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Reference to the Customer.",
@@ -279,13 +273,7 @@ class Shipment(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="shipments",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="shipments",
-    )
 
     sales_order: Mapped["SalesOrder"] = relationship(
         back_populates="shipments",
@@ -295,9 +283,6 @@ class Shipment(BaseModel):
         back_populates="shipments",
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="shipments",
-    )
 
     sales_person: Mapped["SalesPerson"] = relationship(
         back_populates="shipments",

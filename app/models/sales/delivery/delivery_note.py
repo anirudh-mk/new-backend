@@ -22,10 +22,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.company.branch import Branch
-    from app.models.party.customer.customer import Customer
-    from app.models.inventory.warehouse.warehouse import Warehouse
     from app.models.sales.order.sales_order import SalesOrder
     from app.models.sales.master.sales_person import SalesPerson
     from app.models.workflow.approval_workflow import ApprovalWorkflow
@@ -168,14 +164,12 @@ class DeliveryNote(BaseModel):
     )
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     branch_id: Mapped[UUID] = mapped_column(
-        ForeignKey("branches.id"),
         nullable=False,
         index=True,
         doc="Reference to the Branch.",
@@ -189,14 +183,12 @@ class DeliveryNote(BaseModel):
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Reference to the Customer.",
     )
 
     warehouse_id: Mapped[UUID] = mapped_column(
-        ForeignKey("warehouses.id"),
         nullable=False,
         index=True,
         doc="Warehouse responsible for the delivery.",
@@ -305,25 +297,13 @@ class DeliveryNote(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="delivery_notes",
-    )
 
-    branch: Mapped["Branch"] = relationship(
-        back_populates="delivery_notes",
-    )
 
     sales_order: Mapped["SalesOrder"] = relationship(
         back_populates="delivery_notes",
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="delivery_notes",
-    )
 
-    warehouse: Mapped["Warehouse"] = relationship(
-        back_populates="delivery_notes",
-    )
 
     sales_person: Mapped["SalesPerson"] = relationship(
         back_populates="delivery_notes",

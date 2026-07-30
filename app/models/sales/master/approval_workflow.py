@@ -18,11 +18,6 @@ from sqlalchemy.orm import (
 
 from app.database.base import BaseModel
 
-if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.workflow.approval_workflow_step import ApprovalWorkflowStep
-
-
 class ApprovalWorkflow(BaseModel):
     """
     Represents a reusable Approval Workflow Definition.
@@ -162,7 +157,6 @@ class ApprovalWorkflow(BaseModel):
     __tablename__ = "approval_workflows"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
@@ -228,9 +222,6 @@ class ApprovalWorkflow(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="approval_workflows",
-    )
 
     steps: Mapped[list["ApprovalWorkflowStep"]] = relationship(
         back_populates="workflow",

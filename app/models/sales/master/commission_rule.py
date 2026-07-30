@@ -21,7 +21,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
     from app.models.sales.master.sales_person import SalesPerson
 
 
@@ -158,7 +157,6 @@ class CommissionRule(BaseModel):
     __tablename__ = "commission_rules"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
@@ -240,9 +238,6 @@ class CommissionRule(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="commission_rules",
-    )
 
     sales_persons: Mapped[list["SalesPerson"]] = relationship(
         back_populates="commission_rule",

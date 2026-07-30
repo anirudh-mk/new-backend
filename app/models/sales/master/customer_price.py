@@ -21,10 +21,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.inventory.product.product import Product
-    from app.models.inventory.product.product_variant import ProductVariant
-    from app.models.party.customer.customer import Customer
     from app.models.sales.master.sales_price_list import SalesPriceList
 
 
@@ -188,7 +184,6 @@ class CustomerPrice(BaseModel):
     __tablename__ = "customer_prices"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
@@ -202,21 +197,18 @@ class CustomerPrice(BaseModel):
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Reference to the Customer.",
     )
 
     product_id: Mapped[UUID] = mapped_column(
-        ForeignKey("products.id"),
         nullable=False,
         index=True,
         doc="Reference to the Product.",
     )
 
     product_variant_id: Mapped[UUID | None] = mapped_column(
-        ForeignKey("product_variants.id"),
         nullable=True,
         index=True,
         doc="Optional Product Variant. If specified, this price overrides Product pricing.",
@@ -277,22 +269,10 @@ class CustomerPrice(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="customer_prices",
-    )
 
     sales_price_list: Mapped["SalesPriceList"] = relationship(
         back_populates="customer_prices",
     )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="customer_prices",
-    )
 
-    product: Mapped["Product"] = relationship(
-        back_populates="customer_prices",
-    )
 
-    product_variant: Mapped["ProductVariant"] = relationship(
-        back_populates="customer_prices",
-    )

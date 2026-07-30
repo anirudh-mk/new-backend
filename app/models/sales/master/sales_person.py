@@ -19,8 +19,6 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.hr.employee.employee import Employee
     from app.models.sales.quotation.sales_quotation import SalesQuotation
     from app.models.sales.order.sales_order import SalesOrder
     from app.models.sales.invoice.sales_invoice import SalesInvoice
@@ -172,14 +170,12 @@ class SalesPerson(BaseModel):
     __tablename__ = "sales_persons"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company.",
     )
 
     employee_id: Mapped[UUID] = mapped_column(
-        ForeignKey("employees.id"),
         nullable=False,
         unique=True,
         index=True,
@@ -230,13 +226,7 @@ class SalesPerson(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="sales_persons",
-    )
 
-    employee: Mapped["Employee"] = relationship(
-        back_populates="sales_person",
-    )
 
     quotations: Mapped[list["SalesQuotation"]] = relationship(
         back_populates="sales_person",

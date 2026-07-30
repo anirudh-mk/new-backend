@@ -20,11 +20,6 @@ from sqlalchemy.orm import (
 
 from app.database.base import BaseModel
 
-if TYPE_CHECKING:
-    from app.models.company.company import Company
-    from app.models.party.customer.customer import Customer
-
-
 class CustomerContract(BaseModel):
     """
     Represents a commercial agreement between a Company and a Customer.
@@ -167,14 +162,12 @@ class CustomerContract(BaseModel):
     __tablename__ = "customer_contracts"
 
     company_id: Mapped[UUID] = mapped_column(
-        ForeignKey("companies.id"),
         nullable=False,
         index=True,
         doc="Reference to the Company that owns this contract.",
     )
 
     customer_id: Mapped[UUID] = mapped_column(
-        ForeignKey("customers.id"),
         nullable=False,
         index=True,
         doc="Reference to the Customer associated with this contract.",
@@ -266,10 +259,4 @@ class CustomerContract(BaseModel):
     # Relationships
     # ---------------------------------------------------------
 
-    company: Mapped["Company"] = relationship(
-        back_populates="customer_contracts",
-    )
 
-    customer: Mapped["Customer"] = relationship(
-        back_populates="contracts",
-    )
