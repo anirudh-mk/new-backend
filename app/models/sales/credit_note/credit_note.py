@@ -26,7 +26,7 @@ if TYPE_CHECKING:
     from app.models.company.branch import Branch
     from app.models.party.customer.customer import Customer
     from app.models.sales.invoice.sales_invoice import SalesInvoice
-    from app.models.sales.return_.sales_return import SalesReturn
+    from app.models.sales.returns.sales_return import SalesReturn
     from app.models.sales.master.sales_person import SalesPerson
     from app.models.workflow.approval_workflow import ApprovalWorkflow
     from app.models.sales.credit_note.credit_note_item import CreditNoteItem

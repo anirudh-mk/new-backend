@@ -21,7 +21,7 @@ from sqlalchemy.orm import (
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.sales.receipt.customer_receipt import CustomerReceipt
+    from app.models.sales.payment.customer_receipt import CustomerReceipt
     from app.models.sales.invoice.sales_invoice import SalesInvoice
 
 

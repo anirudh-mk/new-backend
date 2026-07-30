@@ -29,7 +29,7 @@ if TYPE_CHECKING:
     from app.models.sales.delivery.delivery_note import DeliveryNote
     from app.models.sales.master.sales_person import SalesPerson
     from app.models.workflow.approval_workflow import ApprovalWorkflow
-    from app.models.logistics.shipment_item import ShipmentItem
+    from app.models.sales.shipment.shipment_item import ShipmentItem
 
 
 class Shipment(BaseModel):

@@ -26,9 +26,8 @@ if TYPE_CHECKING:
     from app.models.company.branch import Branch
     from app.models.party.customer.customer import Customer
     from app.models.accounting.payment.payment_method import PaymentMethod
-    from app.models.sales.invoice.sales_invoice import SalesInvoice
-    from app.models.sales.receipt.customer_receipt_allocation import (
-        CustomerReceiptAllocation,
+    from app.models.sales.payment.customer_receipt_item import (
+        CustomerReceiptItem,
     )
 
 
@@ -277,7 +276,7 @@ class CustomerReceipt(BaseModel):
         back_populates="customer_receipts",
     )
 
-    allocations: Mapped[list["CustomerReceiptAllocation"]] = relationship(
+    items: Mapped[list["CustomerReceiptItem"]] = relationship(
         back_populates="customer_receipt",
         cascade="all, delete-orphan",
     )

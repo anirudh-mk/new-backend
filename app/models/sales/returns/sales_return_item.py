@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from app.models.inventory.uom.uom import UOM
     from app.models.inventory.warehouse.warehouse import Warehouse
     from app.models.sales.invoice.sales_invoice_item import SalesInvoiceItem
-    from app.models.sales.return_.sales_return import SalesReturn
+    from app.models.sales.returns.sales_return import SalesReturn
 
 
 class SalesReturnItem(BaseModel):

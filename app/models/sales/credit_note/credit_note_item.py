@@ -24,7 +24,7 @@ if TYPE_CHECKING:
     from app.models.inventory.product.product_variant import ProductVariant
     from app.models.inventory.uom.uom import UOM
     from app.models.sales.invoice.sales_invoice_item import SalesInvoiceItem
-    from app.models.sales.return_.sales_return_item import SalesReturnItem
+    from app.models.sales.returns.sales_return_item import SalesReturnItem
     from app.models.sales.credit_note.credit_note import CreditNote
 
 

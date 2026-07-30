@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from app.models.inventory.uom.uom import UOM
     from app.models.inventory.warehouse.warehouse import Warehouse
     from app.models.sales.delivery.delivery_note_item import DeliveryNoteItem
-    from app.models.logistics.shipment import Shipment
+    from app.models.sales.shipment.shipment import Shipment
 
 
 class ShipmentItem(BaseModel):

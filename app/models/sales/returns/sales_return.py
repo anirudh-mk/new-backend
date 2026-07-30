@@ -28,7 +28,7 @@ if TYPE_CHECKING:
     from app.models.sales.invoice.sales_invoice import SalesInvoice
     from app.models.sales.master.sales_person import SalesPerson
     from app.models.workflow.approval_workflow import ApprovalWorkflow
-    from app.models.sales.return_.sales_return_item import SalesReturnItem
+    from app.models.sales.returns.sales_return_item import SalesReturnItem
 
 
 class SalesReturn(BaseModel):
