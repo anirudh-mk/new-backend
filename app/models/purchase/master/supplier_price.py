@@ -19,8 +19,8 @@ from app.database.base import AuditModel
 if TYPE_CHECKING:
     pass  # decoupled: from app.models.company.company.company import Company
     pass  # decoupled: from app.models.party.party import Party
-    from app.models.inventory.product import Product
-    from app.models.inventory.uom import UOM
+    from app.models.inventory.product.product import Product
+    from app.models.inventory.uom.uom import UOM
     pass  # decoupled: from app.models.core.currency import Currency
     from app.models.purchase.supplier_price_type import SupplierPriceType
     from app.models.purchase.master.supplier_price_history import SupplierPriceHistory

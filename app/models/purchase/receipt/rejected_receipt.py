@@ -25,9 +25,9 @@ if TYPE_CHECKING:
     pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.receipt.purchase_receipt_item import PurchaseReceiptItem
     from app.models.purchase.order.purchase_order_item import PurchaseOrderItem
-    from app.models.inventory.product import Product
-    from app.models.inventory.product_variant import ProductVariant
-    from app.models.inventory.uom import UOM
+    from app.models.inventory.product.product import Product
+    from app.models.inventory.product.product_variant import ProductVariant
+    from app.models.inventory.uom.uom import UOM
 
 
 class RejectedReceipt(AuditModel):

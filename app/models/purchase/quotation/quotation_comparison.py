@@ -25,8 +25,8 @@ if TYPE_CHECKING:
     pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.quotation.supplier_quotation import SupplierQuotation
     from app.models.purchase.quotation.supplier_quotation_item import SupplierQuotationItem
-    from app.models.inventory.product import Product
-    from app.models.inventory.product_variant import ProductVariant
+    from app.models.inventory.product.product import Product
+    from app.models.inventory.product.product_variant import ProductVariant
 
 
 class QuotationComparison(AuditModel):

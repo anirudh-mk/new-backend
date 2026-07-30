@@ -18,7 +18,7 @@ if TYPE_CHECKING:
     pass  # decoupled: from app.models.company.company.company import Company
     pass  # decoupled: from app.models.company.company.branch import Branch
     pass  # decoupled: from app.models.party.party import Party
-    from app.models.inventory.warehouse import Warehouse
+    from app.models.inventory.warehouse.warehouse import Warehouse
     from app.models.purchase.purchase_order import PurchaseOrder
     from app.models.purchase.purchase_receipt_item import PurchaseReceiptItem
     from app.models.purchase.landed_cost import LandedCost

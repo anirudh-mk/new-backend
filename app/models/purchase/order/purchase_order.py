@@ -25,7 +25,7 @@ if TYPE_CHECKING:
     from app.models.purchase.supplier_quotation import SupplierQuotation
     pass  # decoupled: from app.models.core.currency import Currency
     pass  # decoupled: from app.models.core.address import Address
-    from app.models.inventory.warehouse import Warehouse
+    from app.models.inventory.warehouse.warehouse import Warehouse
     pass  # decoupled: from app.models.accounting.payment_term import PaymentTerm
     pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     pass  # decoupled: from app.models.user.user import User

@@ -14,9 +14,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import BaseModel
 
 if TYPE_CHECKING:
-    from app.models.inventory.product import Product
-    from app.models.inventory.product_variant import ProductVariant
-    from app.models.inventory.uom import UOM
+    from app.models.inventory.product.product import Product
+    from app.models.inventory.product.product_variant import ProductVariant
+    from app.models.inventory.uom.uom import UOM
 
     from app.models.purchase.returns.purchase_return import PurchaseReturn
     from app.models.purchase.receipt.purchase_receipt_item import PurchaseReceiptItem

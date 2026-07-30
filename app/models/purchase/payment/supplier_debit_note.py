@@ -23,9 +23,9 @@ if TYPE_CHECKING:
     pass  # decoupled: from app.models.core.currency import Currency
     pass  # decoupled: from app.models.accounting.journal_status import JournalStatus
     from app.models.purchase.returns.purchase_return_item import PurchaseReturnItem
-    from app.models.inventory.product import Product
-    from app.models.inventory.product_variant import ProductVariant
-    from app.models.inventory.uom import UOM
+    from app.models.inventory.product.product import Product
+    from app.models.inventory.product.product_variant import ProductVariant
+    from app.models.inventory.uom.uom import UOM
 
 
 class SupplierDebitNote(AuditModel):
